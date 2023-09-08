@@ -79,7 +79,6 @@ export default function FeedbackForm() {
     const [hasValidInput, setInputValidState] = useState(false);
     const colorScheme = useColorScheme();
     const navigator = useNavigation();
-    const PhoneInputComponent = PhoneInput.default ? PhoneInput.default : PhoneInput;
 
     const refs = [
         useRef(),

@@ -1,6 +1,5 @@
 import { StyleSheet, Pressable, View, Text, Image, useWindowDimensions } from 'react-native';
 import { LemonYellow } from '../utils/Colors';
-import PhoneInput from 'react-phone-input-2';
 
 const styles = StyleSheet.create({
     container: {
