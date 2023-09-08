@@ -6,8 +6,6 @@ import { isValidEmail, isValidPhone } from '../utils/Validate';
 import { isNullUndefinedOrEmpty, maskPhoneNumber } from '../utils/String';
 import { DarkGrey, LemonYellow, LightGrey } from '../utils/Colors';
 
-// KeyboardAvoidingComponent is good for not wanting users to scroll, otherwise use KeyboardAwareScrollView
-
 const styles = StyleSheet.create({
     container: {
         // flex: 1,

@@ -4,8 +4,6 @@ import { isValidEmail, isValidPassword } from '../utils/Validate';
 import { useNavigation } from '@react-navigation/native';
 import { DarkGrey, LemonYellow, LightGrey } from '../utils/Colors';
 
-// KeyboardAvoidingComponent is good for not wanting users to scroll, otherwise use KeyboardAwareScrollView
-
 const styles = StyleSheet.create({
     container: {
         // flex: 1,

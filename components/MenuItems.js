@@ -124,9 +124,6 @@ function Separator() {
 export default function MenuItems() {
     const colorScheme = useColorScheme();
 
-    // DOES NOT WORK - UGHHHHH
-    // const renderItem = (item) => <Item item={item} />;
-
     return (
         <View style={[ 
             menuStyles.container, 
@@ -138,7 +135,6 @@ export default function MenuItems() {
                 sections={menuItemsToDisplay}
                 nestedScrollEnabled={true}
                 ListHeaderComponent={Header}
-                // ListFooterComponent={LittleLemonFooter}
                 ItemSeparatorComponent={Separator}
                 renderSectionHeader={
                     ({section: {title}}) => <View>
