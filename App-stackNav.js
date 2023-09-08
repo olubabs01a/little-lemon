@@ -1,18 +1,15 @@
-import { Pressable, ScrollView, StyleSheet, Text, View, useColorScheme } from 'react-native';
-import LittleLemonHeader from './components/LittleLemonHeader';
+import { StyleSheet, View, useColorScheme } from 'react-native';
 import LogInOutButton from './components/LogInOutButton';
 import LittleLemonFooter from './components/LittleLemonFooter';
-import LittleLemonWelcome from './components/LittleLemonWelcome';
 import WelcomeScreen from './components/WelcomeScreen';
 import MenuItems from './components/MenuItems';
 import FeedbackForm from './components/FeedbackForm';
 import LoginScreen from './components/LoginScreen';
 import { useState, useCallback } from 'react';
-import Welcome from './components/Welcome';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { DarkGreen, DarkGrey } from './utils/Colors';
 
-const lemonGreen = '#495E57';
 const appStyles = StyleSheet.create({
   header: {
     flex: 0.2,
@@ -20,10 +17,10 @@ const appStyles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    backgroundColor: '#333333' //lemonGreen
+    backgroundColor: DarkGrey //DarkGreen
   },
   footer: {
-    backgroundColor: '#333333' //lemonGreen
+    backgroundColor: DarkGrey //DarkGreen
   },
   navigatorOptions: {
     headerTitleAlign: 'center',
@@ -32,7 +29,7 @@ const appStyles = StyleSheet.create({
       color: 'white'
     },
     headerStyle: {
-      backgroundColor: lemonGreen
+      backgroundColor: DarkGreen
     }
   }
 });
@@ -50,14 +47,11 @@ export default function App() {
 
   return (
     <><NavigationContainer>
-        {/* <View style={appStyles.header}>
-          <LittleLemonHeader isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />
-        </View> */}
         <View style={[ 
           appStyles.body, 
           colorScheme !== 'light' 
-            ? { backgroundColor: '#333333', color: '#fff' }
-            : { backgroundColor: '#fff', color: '#333333' }
+            ? { backgroundColor: DarkGrey, color: 'white' }
+            : { backgroundColor: 'white', color: DarkGrey }
         ]}>
           <Stack.Navigator
             initialRouteName='Welcome'
@@ -65,21 +59,18 @@ export default function App() {
               ...appStyles.navigatorOptions,
               headerRight: (props) => <LogInOutButton {...props} isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />
             }}>
-            {/* <Stack.Group> */}
-              <Stack.Screen name='Login'>
-                {(props) => <LoginScreen {...props} setLoggedIn={setLoggedIn} />}
-              </Stack.Screen>
-              {/* <Stack.Screen options={{ title: 'Home' }} name='Welcome' component={Welcome} /> */}
-              <Stack.Screen options={{ title: 'Home' }} name='Welcome'>
-                {(props) => (
-                  <><WelcomeScreen {...props}
-                    isMenuActive={isMenuActive}
-                    shouldShowMenu={shouldShowMenu} />
-                  {renderMenuItems()}</>
-                )}
-              </Stack.Screen>
-              <Stack.Screen options={{ title: 'A Lemon for your thoughts...' }} name='Feedback' component={FeedbackForm} />
-            {/* </Stack.Group> */}
+            <Stack.Screen name='Login'>
+              {(props) => <LoginScreen {...props} setLoggedIn={setLoggedIn} />}
+            </Stack.Screen>
+            <Stack.Screen options={{ title: 'Home' }} name='Welcome'>
+              {(props) => (
+                <><WelcomeScreen {...props}
+                  isMenuActive={isMenuActive}
+                  shouldShowMenu={shouldShowMenu} />
+                {renderMenuItems()}</>
+              )}
+            </Stack.Screen>
+            <Stack.Screen options={{ title: 'Feedback' }} name='Feedback' component={FeedbackForm} />
           </Stack.Navigator>
         </View>
         <View style={appStyles.footer}>
