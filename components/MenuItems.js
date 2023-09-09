@@ -1,5 +1,4 @@
 import { View, Text, StyleSheet, SectionList, useColorScheme } from 'react-native';
-import LittleLemonFooter from './LittleLemonFooter';
 import { DarkGrey, LemonYellow } from '../utils/Colors';
 
 const menuItemsToDisplay = [
@@ -51,7 +50,7 @@ const menuStyles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "black",
-        paddingBottom: 40
+        paddingVertical: 40
     },
     innerContainer: {
         paddingHorizontal: 10,
@@ -61,7 +60,7 @@ const menuStyles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     listStyle: {
-        margin: 5,
+        margin: 10,
         textAlign: 'center'
     },
     sectionHeader: {

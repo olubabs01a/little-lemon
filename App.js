@@ -5,7 +5,7 @@ import WelcomeScreen from './components/WelcomeScreen';
 import MenuItems from './components/MenuItems';
 import FeedbackForm from './components/FeedbackForm';
 import LoginScreen from './components/LoginScreen';
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -38,55 +38,59 @@ const appStyles = StyleSheet.create({
 });
 
 export default function App() {
-  const [isMenuActive, shouldShowMenu] = useState(false);
   const [isLoggedIn, setLoggedIn] = useState(false);
-
   const colorScheme = useColorScheme();
-  const Drawer = createDrawerNavigator();
+  const LeftDrawer = createDrawerNavigator();
+  const RightDrawer = createDrawerNavigator();
 
-  const renderMenuItems = useCallback(() => {
-    return isMenuActive === true && <MenuItems />;
-  }, [isMenuActive]);
+  const MenuDrawerScreen = () => (
+    <RightDrawer.Navigator
+      id="RightDrawer"
+      drawerContent={(props) => <MenuItems {...props} />}
+      screenOptions={{
+        drawerPosition: 'right',
+        headerShown: false,
+    }}>
+      <RightDrawer.Screen name="MenuItems" component={LeftDrawerScreens} />
+    </RightDrawer.Navigator>);
+
+  const LeftDrawerScreens = () => {
+    return (<View style={[ 
+      appStyles.body, 
+      colorScheme !== 'light' 
+        ? { backgroundColor: DarkGrey, color: 'white' }
+        : { backgroundColor: 'white', color: DarkGrey }
+    ]}>
+      <LeftDrawer.Navigator
+        id='LeftDrawer'
+        initialRouteName='Welcome'
+        backBehavior='history' //'initialRoute'
+        screenOptions={{
+          ...appStyles.navigatorOptions,
+          drawerPosition: 'left',
+          headerRight: (props) => <LogInOutButton {...props} isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />
+        }}>
+        <LeftDrawer.Screen name='Login' options={{
+          /** hide login button on Login screen */
+          headerRight: () => {},
+          /** hide login button in drawer */
+          drawerItemStyle: { display: 'none' }
+          // drawerButton: () => null
+        }}>
+          {(props) => <LoginScreen {...props} setLoggedIn={setLoggedIn} />}
+        </LeftDrawer.Screen>
+        <LeftDrawer.Screen name='Welcome' component={WelcomeScreen}
+          options={{ title: 'Home', tabBarAccessibilityLabel: 'Home', drawerIcon: (props) => <Icon {...props} name='home' /> }} />
+        <LeftDrawer.Screen name='Feedback' component={FeedbackForm}
+          options={{ title: 'Feedback', drawerIcon: (props) => <Icon {...props} name='comments' /> }}
+        />
+      </LeftDrawer.Navigator>
+    </View>
+  )};
 
   return (
     <><NavigationContainer>
-        <View style={[ 
-          appStyles.body, 
-          colorScheme !== 'light' 
-            ? { backgroundColor: DarkGrey, color: 'white' }
-            : { backgroundColor: 'white', color: DarkGrey }
-        ]}>
-          <Drawer.Navigator
-            initialRouteName='Welcome'
-            backBehavior='history' //'initialRoute'
-            screenOptions={{
-              ...appStyles.navigatorOptions,
-              drawerPosition: 'left',
-              headerRight: (props) => <LogInOutButton {...props} isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />
-            }}>
-            <Drawer.Screen name='Login' options={{
-              /** hide login button on Login screen */
-              headerRight: () => {},
-              /** hide login button in drawer */
-              drawerItemStyle: { display: 'none' }
-              // drawerButton: () => null
-            }}>
-              {(props) => <LoginScreen {...props} setLoggedIn={setLoggedIn} />}
-            </Drawer.Screen>
-            <Drawer.Screen name='Welcome'
-              options={{ title: 'Home', tabBarAccessibilityLabel: 'Home', drawerIcon: (props) => <Icon {...props} name='home' /> }} >
-              {(props) => (
-                <><WelcomeScreen {...props}
-                  isMenuActive={isMenuActive}
-                  shouldShowMenu={shouldShowMenu} />
-                {renderMenuItems()}</>
-              )}
-            </Drawer.Screen>
-            <Drawer.Screen name='Feedback' component={FeedbackForm}
-              options={{ title: 'Feedback', drawerIcon: (props) => <Icon {...props} name='comments' /> }}
-            />
-          </Drawer.Navigator>
-        </View>
+        <MenuDrawerScreen />
         <View style={appStyles.footer}>
           <LittleLemonFooter />
         </View>

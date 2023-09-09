@@ -1,5 +1,6 @@
 import { StyleSheet, Pressable, View, Text, Image, useWindowDimensions } from 'react-native';
 import { LemonYellow } from '../utils/Colors';
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
     container: {
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
     body: {
         padding: 10,
         margin: 10,
-        fontSize: 18,
+        fontSize: 20,
         textAlign: 'center',
     },
     submitButton: {
@@ -36,16 +37,17 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         minHeight: 40,
         alignSelf: "center",
-        maxWidth: 100,
+        maxWidth: 125,
         borderRadius: 5
     },
     submitButtonText: {
         color: 'black',
-        fontWeight: '700', 
+        fontWeight: '700'
     }
 });
 
 export default function WelcomeScreen(props) {
+    const navigator = useNavigation();
     const { width, height, fontScale } = useWindowDimensions();
 
     return (
@@ -64,9 +66,9 @@ export default function WelcomeScreen(props) {
                 style={styles.body}>
                     Little Lemon is a charming neighborhood bistro that serves simple food and classic cocktails in a lively but casual environment. We would love to hear more about your experience with us!
             </Text>
-            <Pressable style={styles.submitButton} onPress={_ => props.shouldShowMenu(!props.isMenuActive)}>
+            <Pressable style={{ ...styles.button, ...styles.submitButton }} onPress={_ => navigator.getParent('RightDrawer').openDrawer()}>
                 <Text style={styles.submitButtonText}>
-                    {props.isMenuActive === false ? `View Menu` : `Hide Menu`}
+                    View Menu
                 </Text>
             </Pressable>
         </View>
