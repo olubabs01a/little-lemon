@@ -1,5 +1,6 @@
 import { StyleSheet, View, useColorScheme } from 'react-native';
 import LogInOutButton from './components/LogInOutButton';
+import MenuButton from './components/MenuButton';
 import LittleLemonFooter from './components/LittleLemonFooter';
 import WelcomeScreen from './components/WelcomeScreen';
 import MenuItems from './components/MenuItems';
@@ -68,7 +69,7 @@ export default function App() {
         screenOptions={{
           ...appStyles.navigatorOptions,
           drawerPosition: 'left',
-          headerRight: (props) => <LogInOutButton {...props} isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />
+          headerRight: (props) => <MenuButton {...props} />
         }}>
         <LeftDrawer.Screen name='Login' options={{
           /** hide login button on Login screen */
