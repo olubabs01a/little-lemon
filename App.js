@@ -52,7 +52,7 @@ export default function App() {
         drawerPosition: 'right',
         headerShown: false,
     }}>
-      <RightDrawer.Screen name="MenuItems" component={LeftDrawerScreens} />
+      <RightDrawer.Screen name='MenuItems' component={LeftDrawerScreens} />
     </RightDrawer.Navigator>);
 
   const LeftDrawerScreens = () => {

@@ -19,7 +19,7 @@ export default function MenuButton (props) {
         accessibilityLabel={'Menu Items'}
         onPress={() => {
             navigator.getId() !== 'RightDrawer'
-                ? (navigator.getParent('RightDrawer')).navigate('MenuItems')
+                ? (navigator.getParent('RightDrawer')).openDrawer()
                 : navigator.navigate('MenuItems')
             }}>
                 <Icon style={{ ...styles.loggedIn, color: props.tintColor }} name={'cutlery'}>
