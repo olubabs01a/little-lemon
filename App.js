@@ -7,7 +7,7 @@ import FeedbackForm from './components/FeedbackForm';
 import LoginScreen from './components/LoginScreen';
 import { useState, useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { DarkGreen, DarkGrey, LemonYellow } from './utils/Colors';
 
@@ -42,7 +42,7 @@ export default function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
 
   const colorScheme = useColorScheme();
-  const Tab = createBottomTabNavigator();
+  const Drawer = createDrawerNavigator();
 
   const renderMenuItems = useCallback(() => {
     return isMenuActive === true && <MenuItems />;
@@ -56,34 +56,36 @@ export default function App() {
             ? { backgroundColor: DarkGrey, color: 'white' }
             : { backgroundColor: 'white', color: DarkGrey }
         ]}>
-          <Tab.Navigator
+          <Drawer.Navigator
             initialRouteName='Welcome'
             backBehavior='history' //'initialRoute'
             screenOptions={{
               ...appStyles.navigatorOptions,
+              drawerPosition: 'left',
               headerRight: (props) => <LogInOutButton {...props} isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />
             }}>
-            <Tab.Screen name='Login' options={{
+            <Drawer.Screen name='Login' options={{
               /** hide login button on Login screen */
               headerRight: () => {},
-              /** hide login button on bottom bar */
-              tabBarButton: () => null
+              /** hide login button in drawer */
+              drawerItemStyle: { display: 'none' }
+              // drawerButton: () => null
             }}>
               {(props) => <LoginScreen {...props} setLoggedIn={setLoggedIn} />}
-            </Tab.Screen>
-            <Tab.Screen name='Welcome'
-              options={{ title: 'Home', tabBarAccessibilityLabel: 'Home', tabBarIcon: (props) => <Icon {...props} name='home' />, tabBarStyle: { display: isMenuActive ? 'none' : 'flex' }}} >
+            </Drawer.Screen>
+            <Drawer.Screen name='Welcome'
+              options={{ title: 'Home', tabBarAccessibilityLabel: 'Home', drawerIcon: (props) => <Icon {...props} name='home' /> }} >
               {(props) => (
                 <><WelcomeScreen {...props}
                   isMenuActive={isMenuActive}
                   shouldShowMenu={shouldShowMenu} />
                 {renderMenuItems()}</>
               )}
-            </Tab.Screen>
-            <Tab.Screen name='Feedback' component={FeedbackForm}
-              options={{ title: 'Feedback', tabBarAccessibilityLabel: 'Feedback', tabBarIcon: (props) => <Icon {...props} name='comments' /> }}
+            </Drawer.Screen>
+            <Drawer.Screen name='Feedback' component={FeedbackForm}
+              options={{ title: 'Feedback', drawerIcon: (props) => <Icon {...props} name='comments' /> }}
             />
-          </Tab.Navigator>
+          </Drawer.Navigator>
         </View>
         <View style={appStyles.footer}>
           <LittleLemonFooter />
