@@ -10,21 +10,17 @@ import { useState } from 'react';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { DrawerContentScrollView, DrawerItem, DrawerItemList, createDrawerNavigator } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { DarkGreen, DarkGrey, LemonYellow } from './utils/Colors';
+import { DarkGreen, DarkGrey, LemonYellow, LightGrey } from './utils/Colors';
 import ProfileScreen from './components/ProfileScreen';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const appStyles = StyleSheet.create({
-  header: {
-    flex: 0.2,
-    maxHeight: 100
-  },
   body: {
     flex: 1,
-    backgroundColor: DarkGrey //DarkGreen
+    backgroundColor: DarkGrey
   },
   footer: {
-    backgroundColor: DarkGrey //DarkGreen
+    backgroundColor: DarkGrey
   },
   logOutDrawerItem: {
     borderRadius: 5
@@ -49,8 +45,9 @@ const appStyles = StyleSheet.create({
     headerStyle: {
       backgroundColor: DarkGreen
     },
-    tabBarActiveTintColor: LemonYellow,
-    tabBarActiveBackgroundColor: DarkGreen
+    drawerActiveTintColor: DarkGreen,
+    drawerActiveBackgroundColor: LemonYellow,
+    drawerInactiveTintColor: DarkGrey
   }
 });
 
@@ -84,16 +81,45 @@ export default function App() {
             ? (
               <DrawerItem 
                 name='Profile'
+                accessibilityLabel={'View Profile'}
                 label={'View Profile'}
-                icon={props => <Icon {...props} name='user-circle' />}
+                icon={props => 
+                  <Icon
+                    {...
+                      {...props, color: colorScheme !== 'light'
+                        ? LightGrey
+                        : DarkGrey
+                    }
+                  }
+                    name='user-circle' />}
+                labelStyle={
+                  colorScheme !== 'light'
+                  ? { color: LightGrey, paddingLeft: 8 }
+                  : { color: DarkGrey, paddingLeft: 8 }
+                }
                 style={appStyles.logOutDrawerItem}
                 onPress={() => navigator.navigate('Profile')}
               />
             ) : (
               <DrawerItem 
                 name='Login'
+                accessibilityLabel={'Login'}
                 label={'Login'}
-                icon={props => <Icon {...props} name='user' />}
+                activeBackgroundColor='yellow'
+                icon={props => 
+                  <Icon
+                    {...
+                      {...props, color: colorScheme !== 'light'
+                        ? LightGrey
+                        : DarkGrey
+                    }
+                  }
+                    name='user' />}
+                labelStyle={
+                  colorScheme !== 'light'
+                  ? { color: LightGrey, paddingLeft: 8 }
+                  : { color: DarkGrey, paddingLeft: 8 }
+                }
                 style={appStyles.logOutDrawerItem}
                 onPress={() => navigator.navigate('Login')}
               />
@@ -127,6 +153,7 @@ export default function App() {
         screenOptions={{
           ...appStyles.navigatorOptions,
           drawerPosition: 'left',
+          drawerInactiveTintColor: colorScheme !== 'light' ? LightGrey : DarkGrey, 
           headerRight: (props) => <MenuButton {...props} />
         }}>
         <LeftDrawer.Screen name='Login' options={{
