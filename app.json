@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./assets/little-lemon-logo-grey.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/little-lemon-logo.png",
       "resizeMode": "contain",
