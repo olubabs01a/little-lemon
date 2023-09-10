@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, View, Text, useColorScheme } from 'react-native';
+import { Pressable, StyleSheet, Image, View, Text, useColorScheme } from 'react-native';
 import LogInOutButton from './components/LogInOutButton';
 import MenuButton from './components/MenuButton';
 import LittleLemonFooter from './components/LittleLemonFooter';
@@ -21,6 +21,13 @@ const appStyles = StyleSheet.create({
   },
   footer: {
     backgroundColor: DarkGrey
+  },
+  drawerIcon: {
+    marginTop: 0,
+    alignSelf: 'center',
+    maxWidth: 250,
+    maxHeight: 250,
+    marginBottom: 200
   },
   logOutDrawerItem: {
     borderRadius: 5
@@ -84,6 +91,12 @@ export default function App() {
 
     return (
       <SafeAreaView style={{ flex: 1, position: 'absolute', width: '100%', bottom: 0, justifyContent: 'space-between' }} forceInset={{top: "always", horizontal: "never"}}>
+        <Image
+          resizeMode='center'
+          style={appStyles.drawerIcon}
+          accessible={true}
+          accessibilityLabel={'Little Lemon logo'}
+          source={require('./img/littleLemonLogo.png')} />
         <DrawerContentScrollView {...props}>
           <DrawerItemList {...props} />
         </DrawerContentScrollView>
