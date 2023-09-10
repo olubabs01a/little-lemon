@@ -1,6 +1,8 @@
 import { StyleSheet, Pressable, View, Text, Image, useColorScheme } from 'react-native';
 import { LemonYellow, DarkGrey } from '../utils/Colors';
 import { ScrollView } from 'react-native-gesture-handler';
+import { CustomDrawerSelection } from './types';
+import { useEffect } from 'react';
 
 const styles = StyleSheet.create({
     container: {
@@ -59,6 +61,10 @@ const styles = StyleSheet.create({
 
 export default function WelcomeScreen (props) {
     const colorScheme = useColorScheme();
+
+    useEffect(() => {
+        props.setCustomDrawerSelection(CustomDrawerSelection.None);
+    }, []);
 
     return (
         <><ScrollView style={[

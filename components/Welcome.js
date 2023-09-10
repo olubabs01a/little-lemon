@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Image, StyleSheet, Text, ScrollView, Pressable, useColorScheme } from 'react-native';
 import { DarkGrey, LemonYellow } from '../utils/Colors';
 import { CustomDrawerSelection } from './types';
 
 const Welcome = (props) => {
   const colorScheme = useColorScheme();
+
+  useEffect(() => {
+    props.setCustomDrawerSelection(CustomDrawerSelection.None);
+  }, []);
 
   return (
     <ScrollView 

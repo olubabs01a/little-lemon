@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { isValidEmail, isValidPhone, validMaskedPhoneLength } from '../utils/Validate';
 import { isNullUndefinedOrEmpty, maskPhoneNumber } from '../utils/String';
 import { DarkGrey, LemonYellow, LightGrey } from '../utils/Colors';
+import { CustomDrawerSelection } from './types';
 
 const styles = StyleSheet.create({
     container: {
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function FeedbackForm() {
+export default function FeedbackForm(props) {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [phone, setPhone] = useState("");
@@ -135,6 +136,7 @@ export default function FeedbackForm() {
     };
 
     useEffect(() => {
+        props.setCustomDrawerSelection(CustomDrawerSelection.None);
         resetForm();
 
         return () => {

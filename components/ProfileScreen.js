@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { isValidEmail, isValidPassword, isValidPhone, validMaskedPhoneLength } from '../utils/Validate';
 import { isNullUndefinedOrEmpty, maskPhoneNumber } from '../utils/String';
 import { DarkGrey, LemonYellow, LightGrey } from '../utils/Colors';
+import { CustomDrawerSelection } from './types';
 
 const styles = StyleSheet.create({
     container: {
@@ -115,6 +116,7 @@ export default function ProfileScreen(props) {
     };
 
     useEffect(() => {
+        props.setCustomDrawerSelection(CustomDrawerSelection.Profile);
         resetForm();
 
         return () => {

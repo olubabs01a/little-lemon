@@ -92,7 +92,6 @@ export default function SubscribeScreen(props) {
         resetForm();
 
         return () => {
-            props.setCustomDrawerSelection(CustomDrawerSelection.None);
             resetForm();
         };
     }, []);

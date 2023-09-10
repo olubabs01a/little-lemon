@@ -1,9 +1,9 @@
 import { StyleSheet, ScrollView, Text, TextInput, useColorScheme, Pressable } from 'react-native';
 import { useEffect, useRef, useState } from 'react';
 import { isValidEmail, isValidPassword } from '../utils/Validate';
-import { useNavigation } from '@react-navigation/native';
 import { DarkGrey, LemonYellow, LightGrey } from '../utils/Colors';
 import { isNullUndefinedOrEmpty } from '../utils/String';
+import { CustomDrawerSelection } from './types';
 
 const styles = StyleSheet.create({
     container: {
@@ -70,7 +70,6 @@ export default function LoginScreen(props) {
     const [isLoggedIn, setLoggedIn] = useState(false);
     const colorScheme = useColorScheme();
     const passwordRef = useRef();
-    const navigator = useNavigation();
 
     const resetForm = () => {
         setEmail("");
@@ -94,24 +93,7 @@ export default function LoginScreen(props) {
     };
 
     useEffect(() => {
-        const sub$ = navigator.addListener('focus', () => {
-            props.setIsLoginScreen(true);
-        });
-
-        // Return the function to unsubscribe from the event so it gets removed on unmount.
-        return sub$;
-    }, [navigator]);
-    
-    useEffect(() => {
-        const sub$ = navigator.addListener('blur', () => {
-            props.setIsLoginScreen(false);
-        });
-
-        // Return the function to unsubscribe from the event so it gets removed on unmount.
-        return sub$;
-    }, [navigator]);
-
-    useEffect(() => {
+        props.setCustomDrawerSelection(CustomDrawerSelection.Login);
         resetForm();
 
         return () => {
@@ -193,7 +175,7 @@ export default function LoginScreen(props) {
                             : { ...styles.button, ...styles.submitButton, ...styles.disabledButton }}
                     onPress={_ => {
                         props.setLoggedIn(true);
-                        navigator.navigate('Welcome');
+                        props.navigation.navigate('Welcome');
                     }}>
                     <Text style={styles.submitButtonText}>Submit</Text>
                 </Pressable></>
