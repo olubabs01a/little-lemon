@@ -4,12 +4,15 @@
     "slug": "little-lemon",
     "version": "1.0.0",
     "orientation": "default",
-    "icon": "./img/lemonLogo.png",
+    "icon": "./assets/little-lemon-logo-grey.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./img/littleLemonLogo.png",
+      "image": "./assets/little-lemon-logo.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ffffff",
+      "dark": {
+        "backgroundColor": "#333333"
+      }
     },
     "assetBundlePatterns": [
       "**/*"

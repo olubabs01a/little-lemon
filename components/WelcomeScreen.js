@@ -1,11 +1,12 @@
 import { StyleSheet, Pressable, View, Text, Image, useColorScheme } from 'react-native';
 import { LemonYellow, DarkGrey } from '../utils/Colors';
-import { useNavigation } from '@react-navigation/native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 10,
+        paddingHorizontal: 10,
+        paddingBottom: 20,
         backgroundColor: 'white'
     },
     logo: {
@@ -33,9 +34,17 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textAlign: 'center',
     },
+    image: {
+        alignSelf: 'center',
+        width: 300,
+        height: 250,
+        borderRadius: 10,
+        margin: 5
+    },
     submitButton: {
         backgroundColor: LemonYellow, //Coral,
         padding: 10,
+        marginVertical: 20,
         marginHorizontal: 10,
         minHeight: 40,
         alignSelf: "center",
@@ -48,12 +57,11 @@ const styles = StyleSheet.create({
     }
 });
 
-export default function WelcomeScreen(props) {
-    const navigator = useNavigation();
+export default function WelcomeScreen (props) {
     const colorScheme = useColorScheme();
 
     return (
-        <><View style={[
+        <><ScrollView style={[
             styles.container,
             colorScheme !== 'light'
                 ? { backgroundColor: DarkGrey, color: 'white' }
@@ -82,12 +90,40 @@ export default function WelcomeScreen(props) {
                     ]}>
                     Little Lemon is a charming neighborhood bistro that serves simple food and classic cocktails in a lively but casual environment. We would love to hear more about your experience with us!
             </Text>
-            <Pressable style={{ ...styles.button, ...styles.submitButton }} onPress={_ => navigator.getParent('RightDrawer').openDrawer()}>
+            <Image
+                style={styles.image}
+                source={require('../img/Picture1.png')}
+                resizeMode="cover"
+                accessible={true}
+                accessibilityLabel={'Food Picture 1'}
+            />
+            <Image
+                style={styles.image}
+                source={require('../img/Picture2.png')}
+                resizeMode="cover"
+                accessible={true}
+                accessibilityLabel={'Food Picture 2'}
+            />
+            <Image
+                style={styles.image}
+                source={require('../img/Picture3.png')}
+                resizeMode="cover"
+                accessible={true}
+                accessibilityLabel={'Food Picture 3'}
+            />
+            <Image
+                style={styles.image}
+                source={require('../img/Picture4.png')}
+                resizeMode="cover"
+                accessible={true}
+                accessibilityLabel={'Food Picture 4'}
+            />
+            <Pressable style={{ ...styles.button, ...styles.submitButton }} onPress={_ => props.navigation.getParent('RightDrawer').openDrawer()}>
                 <Text style={styles.submitButtonText}>
                     View Menu
                 </Text>
             </Pressable>
-        </View>
+        </ScrollView>
         </>
     );
 }

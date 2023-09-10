@@ -2,6 +2,7 @@ import { Pressable, StyleSheet, Image, View, Text, useColorScheme } from 'react-
 import LogInOutButton from './components/LogInOutButton';
 import MenuButton from './components/MenuButton';
 import LittleLemonFooter from './components/LittleLemonFooter';
+import Welcome from './components/Welcome';
 import WelcomeScreen from './components/WelcomeScreen';
 import MenuItems from './components/MenuItems';
 import FeedbackForm from './components/FeedbackForm';
@@ -200,8 +201,11 @@ export default function App() {
         }}>
           {(props) => <ProfileScreen {...props} isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} setIsLoginScreen={setIsLoginScreen} />}
         </LeftDrawer.Screen>
-        <LeftDrawer.Screen name='Welcome' component={WelcomeScreen}
-          options={{ title: 'Home', drawerIcon: (props) => <Icon {...props} name='home' /> }} />
+        <LeftDrawer.Screen name='Welcome' component={Welcome}
+          options={{ title: 'Welcome', drawerIcon: (props) => <Icon {...props} name='home' /> }} />
+        
+        {/* <LeftDrawer.Screen name='Welcome' component={WelcomeScreen}
+          options={{ title: 'Home', drawerIcon: (props) => <Icon {...props} name='home' /> }} /> */}
         <LeftDrawer.Screen name='Feedback' component={FeedbackForm}
           options={{ title: 'Feedback', drawerIcon: (props) => <Icon {...props} name='comments' /> }}
         />

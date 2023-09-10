@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import { isValidEmail, isValidPassword, isValidPhone, validMaskedPhoneLength } from '../utils/Validate';
 import { isNullUndefinedOrEmpty, maskPhoneNumber } from '../utils/String';
 import { DarkGrey, LemonYellow, LightGrey } from '../utils/Colors';
-import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
     container: {
@@ -73,7 +72,6 @@ export default function ProfileScreen(props) {
     const [newPassword, setNewPassword] = useState("");
     const [hasValidInput, setInputValidState] = useState(false);
 
-    const navigator = useNavigation();
     const colorScheme = useColorScheme();
     const refs = [
         useRef(),
@@ -115,24 +113,6 @@ export default function ProfileScreen(props) {
             isValidNewPassword(pwd)
         );
     };
-
-    useEffect(() => {
-        const sub$ = navigator.addListener('focus', () => {
-            props.setIsLoginScreen(true);
-        });
-
-        // Return the function to unsubscribe from the event so it gets removed on unmount.
-        return sub$;
-    }, [navigator]);
-    
-    useEffect(() => {
-        const sub$ = navigator.addListener('blur', () => {
-            props.setIsLoginScreen(false);
-        });
-
-        // Return the function to unsubscribe from the event so it gets removed on unmount.
-        return sub$;
-    }, [navigator]);
 
     useEffect(() => {
         resetForm();
@@ -282,14 +262,14 @@ export default function ProfileScreen(props) {
                         setNewPassword(val);
                         validateInput(firstName, lastName, phone, email, val);
                     }} />
-                    <Pressable
-                        disabled={!hasValidInput}
-                        style={hasValidInput 
-                                ? { ...styles.button, ...styles.submitButton }
-                                : { ...styles.button, ...styles.submitButton, ...styles.disabledButton }}
-                        onPress={_ => {
-                            updateProfile();
-                        }}>
+                <Pressable
+                    disabled={!hasValidInput}
+                    style={hasValidInput 
+                            ? { ...styles.button, ...styles.submitButton }
+                            : { ...styles.button, ...styles.submitButton, ...styles.disabledButton }}
+                    onPress={_ => {
+                        updateProfile();
+                    }}>
                     <Text style={styles.submitButtonText}>Save</Text>
                 </Pressable>
             </View>

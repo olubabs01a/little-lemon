@@ -8,7 +8,7 @@ import { DarkGrey, LemonYellow, LightGrey } from '../utils/Colors';
 
 const styles = StyleSheet.create({
     container: {
-        paddingHorizontal: 10,
+        paddingHorizontal: 10
     },
     header: {
         padding: 15,
@@ -144,14 +144,14 @@ export default function FeedbackForm() {
 
     return (
         <><KeyboardAwareScrollView 
-            style={[ 
+            style={[
                 styles.container, 
                 colorScheme !== 'light'
                 ? { backgroundColor: DarkGrey, color: 'white' }
                 : { backgroundColor: 'white', color: DarkGrey }
             ]}
             indicatorStyle='white'
-            contentContainerStyle={{alignItems: 'center'}}
+            contentContainerStyle={{ flex: 1, alignItems: 'center'}}
             enableOnAndroid={true}
             enableAutomaticScroll={true}
             keyboardDismissMode='interactive' >
