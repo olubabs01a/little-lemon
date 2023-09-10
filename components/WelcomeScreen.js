@@ -1,4 +1,4 @@
-import { StyleSheet, Pressable, View, Text, Image, useWindowDimensions } from 'react-native';
+import { StyleSheet, Pressable, View, Text, Image } from 'react-native';
 import { LemonYellow } from '../utils/Colors';
 import { useNavigation } from '@react-navigation/native';
 
@@ -48,7 +48,6 @@ const styles = StyleSheet.create({
 
 export default function WelcomeScreen(props) {
     const navigator = useNavigation();
-    const { width, height, fontScale } = useWindowDimensions();
 
     return (
         <><View style={styles.container} indicatorStyle='white'>

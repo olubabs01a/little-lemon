@@ -1,4 +1,4 @@
-import { StyleSheet, View, useColorScheme } from 'react-native';
+import { Pressable, StyleSheet, View, Text, useColorScheme } from 'react-native';
 import LogInOutButton from './components/LogInOutButton';
 import MenuButton from './components/MenuButton';
 import LittleLemonFooter from './components/LittleLemonFooter';
@@ -28,6 +28,17 @@ const appStyles = StyleSheet.create({
   },
   logOutDrawerItem: {
     borderRadius: 5
+  },
+  logOutLink: {
+    position: 'absolute',
+    alignSelf: 'flex-end',
+    paddingHorizontal: 20,
+    bottom: 10,
+    fontSize: 12,
+    color: 'blue',
+    textDecorationStyle: 'solid',
+    textDecorationLine: 'underline',
+    textDecorationColor: 'blue'
   },
   navigatorOptions: {
     headerTitleAlign: 'center',
@@ -88,6 +99,14 @@ export default function App() {
               />
             )
           }
+          {isLoggedIn && (
+            <Pressable
+              accessibilityLabel={'Log out'}
+              style={appStyles.logOutLink}
+              onPress={() => { setLoggedIn(false) }}>
+              <Text style={appStyles.logOutLink}>Log out</Text>
+            </Pressable>
+          )}
         </DrawerContentScrollView>
       </SafeAreaView>
     );
@@ -126,7 +145,7 @@ export default function App() {
           {(props) => <ProfileScreen {...props} isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />}
         </LeftDrawer.Screen>
         <LeftDrawer.Screen name='Welcome' component={WelcomeScreen}
-          options={{ title: 'Home', headerRight: () => {}, drawerIcon: (props) => <Icon {...props} name='home' /> }} />
+          options={{ title: 'Home', drawerIcon: (props) => <Icon {...props} name='home' /> }} />
         <LeftDrawer.Screen name='Feedback' component={FeedbackForm}
           options={{ title: 'Feedback', drawerIcon: (props) => <Icon {...props} name='comments' /> }}
         />
