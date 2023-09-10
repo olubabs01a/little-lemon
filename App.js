@@ -7,10 +7,12 @@ import MenuItems from './components/MenuItems';
 import FeedbackForm from './components/FeedbackForm';
 import LoginScreen from './components/LoginScreen';
 import { useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { DrawerContentScrollView, DrawerItem, DrawerItemList, createDrawerNavigator } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { DarkGreen, DarkGrey, LemonYellow } from './utils/Colors';
+import ProfileScreen from './components/ProfileScreen';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const appStyles = StyleSheet.create({
   header: {
@@ -23,6 +25,9 @@ const appStyles = StyleSheet.create({
   },
   footer: {
     backgroundColor: DarkGrey //DarkGreen
+  },
+  logOutDrawerItem: {
+    borderRadius: 5
   },
   navigatorOptions: {
     headerTitleAlign: 'center',
@@ -50,10 +55,43 @@ export default function App() {
       drawerContent={(props) => <MenuItems {...props} />}
       screenOptions={{
         drawerPosition: 'right',
-        headerShown: false,
+        headerShown: false
     }}>
       <RightDrawer.Screen name='MenuItems' component={LeftDrawerScreens} />
     </RightDrawer.Navigator>);
+
+  function LogoutDrawerContent(props) {
+    const navigator = useNavigation();
+
+    return (
+      <SafeAreaView style={{ flex: 1, position: 'absolute', width: '100%', bottom: 0, justifyContent: 'space-between' }} forceInset={{top: "always", horizontal: "never"}}>
+        <DrawerContentScrollView {...props}>
+          <DrawerItemList {...props} />
+        </DrawerContentScrollView>
+        <DrawerContentScrollView {...props} style={{ flex: 1, alignContent: 'flex-end' }}>
+          {isLoggedIn
+            ? (
+              <DrawerItem 
+                name='Profile'
+                label={'View Profile'}
+                icon={props => <Icon {...props} name='user-circle' />}
+                style={appStyles.logOutDrawerItem}
+                onPress={() => navigator.navigate('Profile')}
+              />
+            ) : (
+              <DrawerItem 
+                name='Login'
+                label={'Login'}
+                icon={props => <Icon {...props} name='user' />}
+                style={appStyles.logOutDrawerItem}
+                onPress={() => navigator.navigate('Login')}
+              />
+            )
+          }
+        </DrawerContentScrollView>
+      </SafeAreaView>
+    );
+  }
 
   const LeftDrawerScreens = () => {
     return (<View style={[ 
@@ -65,6 +103,7 @@ export default function App() {
       <LeftDrawer.Navigator
         id='LeftDrawer'
         initialRouteName='Welcome'
+        drawerContent={props => <LogoutDrawerContent {...props} />}
         backBehavior='history' //'initialRoute'
         screenOptions={{
           ...appStyles.navigatorOptions,
@@ -72,16 +111,22 @@ export default function App() {
           headerRight: (props) => <MenuButton {...props} />
         }}>
         <LeftDrawer.Screen name='Login' options={{
-          /** hide login button on Login screen */
+          /** hide menu button on Login screen */
           headerRight: () => {},
-          /** hide login button in drawer */
+          /** hide this login button in drawer */
           drawerItemStyle: { display: 'none' }
-          // drawerButton: () => null
         }}>
           {(props) => <LoginScreen {...props} setLoggedIn={setLoggedIn} />}
         </LeftDrawer.Screen>
+        <LeftDrawer.Screen name='Profile' options={{
+          headerRight: (props) => <LogInOutButton {...props} isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />,
+          /** hide this profile button in drawer */
+          drawerItemStyle: { display: 'none' }
+        }}>
+          {(props) => <ProfileScreen {...props} isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />}
+        </LeftDrawer.Screen>
         <LeftDrawer.Screen name='Welcome' component={WelcomeScreen}
-          options={{ title: 'Home', tabBarAccessibilityLabel: 'Home', drawerIcon: (props) => <Icon {...props} name='home' /> }} />
+          options={{ title: 'Home', headerRight: () => {}, drawerIcon: (props) => <Icon {...props} name='home' /> }} />
         <LeftDrawer.Screen name='Feedback' component={FeedbackForm}
           options={{ title: 'Feedback', drawerIcon: (props) => <Icon {...props} name='comments' /> }}
         />
