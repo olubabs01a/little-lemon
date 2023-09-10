@@ -30,11 +30,11 @@ const appStyles = StyleSheet.create({
     alignSelf: 'flex-end',
     paddingHorizontal: 20,
     bottom: 10,
-    fontSize: 12,
-    color: 'blue',
+    fontSize: 13,
+    color: '#FF6969',
     textDecorationStyle: 'solid',
-    textDecorationLine: 'underline',
-    textDecorationColor: 'blue'
+    // textDecorationLine: 'underline',
+    textDecorationColor: '#FF6969'
   },
   navigatorOptions: {
     headerTitleAlign: 'center',
@@ -63,6 +63,8 @@ export default function App() {
       drawerContent={(props) => <MenuItems {...props} />}
       screenOptions={{
         drawerPosition: 'right',
+        drawerAllowFontScaling: true,
+        headerTitleAllowFontScaling: true,
         headerShown: false
     }}>
       <RightDrawer.Screen name='MenuItems' component={LeftDrawerScreens} />
@@ -70,6 +72,15 @@ export default function App() {
 
   function LogoutDrawerContent(props) {
     const navigator = useNavigation();
+    const defaultTextColor = colorScheme !== 'light' ? LightGrey : DarkGrey;
+
+    const renderActiveTint = () => {
+      return isLoginScreen ? DarkGreen : defaultTextColor;
+    };
+
+    const renderActiveBackground = () => {
+      return isLoginScreen ? LemonYellow : DarkGrey;
+    };
 
     return (
       <SafeAreaView style={{ flex: 1, position: 'absolute', width: '100%', bottom: 0, justifyContent: 'space-between' }} forceInset={{top: "always", horizontal: "never"}}>
@@ -152,6 +163,11 @@ export default function App() {
         backBehavior='history' //'initialRoute'
         screenOptions={{
           ...appStyles.navigatorOptions,
+          drawerAllowFontScaling: true,
+          headerTitleAllowFontScaling: true,
+          drawerStyle: {
+            backgroundColor: colorScheme !== 'light' ? DarkGrey : 'white'
+          },
           drawerPosition: 'left',
           drawerInactiveTintColor: colorScheme !== 'light' ? LightGrey : DarkGrey, 
           headerRight: (props) => <MenuButton {...props} />

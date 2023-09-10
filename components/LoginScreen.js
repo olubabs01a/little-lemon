@@ -7,8 +7,8 @@ import { isNullUndefinedOrEmpty } from '../utils/String';
 
 const styles = StyleSheet.create({
     container: {
-        marginHorizontal: 10,
-        marginVertical: 20
+        paddingHorizontal: 10,
+        paddingVertical: 20
     },
     header: {
         paddingVertical: 20,

@@ -7,8 +7,8 @@ import { DarkGrey, LemonYellow, LightGrey } from '../utils/Colors';
 
 const styles = StyleSheet.create({
     container: {
-        marginHorizontal: 10,
-        marginVertical: 20
+        paddingHorizontal: 10,
+        paddingVertical: 20
     },
     header: {
         paddingVertical: 20,

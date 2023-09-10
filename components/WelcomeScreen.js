@@ -1,10 +1,12 @@
-import { StyleSheet, Pressable, View, Text, Image } from 'react-native';
-import { LemonYellow } from '../utils/Colors';
+import { StyleSheet, Pressable, View, Text, Image, useColorScheme } from 'react-native';
+import { LemonYellow, DarkGrey } from '../utils/Colors';
 import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
     container: {
-        margin: 5
+        flex: 1,
+        padding: 10,
+        backgroundColor: 'white'
     },
     logo: {
         marginVertical: 10,
@@ -48,21 +50,36 @@ const styles = StyleSheet.create({
 
 export default function WelcomeScreen(props) {
     const navigator = useNavigation();
+    const colorScheme = useColorScheme();
 
     return (
-        <><View style={styles.container} indicatorStyle='white'>
+        <><View style={[
+            styles.container,
+            colorScheme !== 'light'
+                ? { backgroundColor: DarkGrey, color: 'white' }
+                : { backgroundColor: 'white', color: DarkGrey }
+        ]} indicatorStyle='white'>
             <View style={styles.headerWrapper}>
                 <Image
                     accessible={true}
                     accessibilityLabel='Little Lemon Logo'
                     resizeMode='cover' style={styles.logo} source={require('../img/lemonLogo.png')} />
                 <Text
-                    style={styles.header}>
+                    style={[styles.header,
+                        colorScheme !== 'light'
+                        ? { color: 'white' }
+                        : { color: DarkGrey }
+                    ]}>
                     Little Lemon
                 </Text>
             </View>
             <Text
-                style={styles.body}>
+                style={[
+                    styles.body,
+                    colorScheme !== 'light'
+                        ? { color: 'white' }
+                        : { color: DarkGrey }
+                    ]}>
                     Little Lemon is a charming neighborhood bistro that serves simple food and classic cocktails in a lively but casual environment. We would love to hear more about your experience with us!
             </Text>
             <Pressable style={{ ...styles.button, ...styles.submitButton }} onPress={_ => navigator.getParent('RightDrawer').openDrawer()}>
@@ -72,5 +89,5 @@ export default function WelcomeScreen(props) {
             </Pressable>
         </View>
         </>
-  );
+    );
 }
