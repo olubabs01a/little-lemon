@@ -2,20 +2,20 @@ import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, useColorScheme, Text, TextInput, Alert, Pressable } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useEffect, useRef, useState } from 'react';
-import { isValidEmail, isValidPhone } from '../utils/Validate';
+import { isValidEmail, isValidPhone, validMaskedPhoneLength } from '../utils/Validate';
 import { isNullUndefinedOrEmpty, maskPhoneNumber } from '../utils/String';
 import { DarkGrey, LemonYellow, LightGrey } from '../utils/Colors';
 
 const styles = StyleSheet.create({
     container: {
-        // flex: 1,
         marginHorizontal: 5,
     },
     header: {
         padding: 15,
         fontSize: 25,
         textAlign: 'center',
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
+        color: DarkGrey
     },
     subtitle: {
         fontSize: 20,
@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
         padding: 10,
         margin: 15,
         fontSize: 18,
+        color: DarkGrey,
         textAlign: 'center',
     },
     formField: {
@@ -125,12 +126,12 @@ export default function FeedbackForm() {
         return colorScheme !== 'light'
             // Handle styling if color scheme is not 'light'
             ? (isValid
-                ? styles.formField
-                : [{ ...styles.formField, ...styles.invalidInput }])
+                ? { ...styles.formField, color: 'white'}
+                : [ styles.formField, styles.invalidInput ])
             // Handle styling if color scheme is 'light'
             : (isValid
-                ? styles.formField
-                : [{ ...styles.formField, ...styles.invalidInput }]);
+                ? { ...styles.formField, color: DarkGrey }
+                : [ styles.formField, styles.invalidInput ]);
     };
 
     useEffect(() => {
@@ -146,8 +147,8 @@ export default function FeedbackForm() {
             style={[ 
                 styles.container, 
                 colorScheme !== 'light'
-                ? { backgroundColor: DarkGrey }
-                : { backgroundColor: 'white' }
+                ? { backgroundColor: DarkGrey, color: 'white' }
+                : { backgroundColor: 'white', color: DarkGrey }
             ]}
             indicatorStyle='white'
             contentContainerStyle={{alignItems: 'center'}}
@@ -155,7 +156,11 @@ export default function FeedbackForm() {
             enableAutomaticScroll={true}
             keyboardDismissMode='interactive' >
             <Text
-                style={styles.header}>
+                style={[styles.header,
+                colorScheme !== 'light'
+                    ? { color: 'white' }
+                    : { color: DarkGrey }
+                ]}>
                 How was your visit to Little Lemon?
             </Text>
             <Text
@@ -163,8 +168,12 @@ export default function FeedbackForm() {
                 A Lemon for your thoughts...
             </Text>
             <Text
-                style={styles.body}>
-                    Little Lemon is a charming neighborhood bistro that serves simple food and classic cocktails in a lively but casual environment. We would love to hear more about your experience with us!
+                style={[styles.body,
+                    colorScheme !== 'light'
+                        ? { color: 'white' }
+                        : { color: DarkGrey }
+                    ]}>
+                Little Lemon is a charming neighborhood bistro that serves simple food and classic cocktails in a lively but casual environment. We would love to hear more about your experience with us!
             </Text>
             <TextInput
                 autoCapitalize='words'
@@ -207,6 +216,7 @@ export default function FeedbackForm() {
                 }} />
             <TextInput
                 ref={refs[1]}
+                maxLength={validMaskedPhoneLength}
                 keyboardType='numeric'
                 placeholderTextColor={
                     isValidPhone(phone)

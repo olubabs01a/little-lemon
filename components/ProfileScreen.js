@@ -1,13 +1,12 @@
 import { StyleSheet, Text, TextInput, useColorScheme, Pressable, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useEffect, useRef, useState } from 'react';
-import { isValidEmail, isValidPassword, isValidPhone } from '../utils/Validate';
+import { isValidEmail, isValidPassword, isValidPhone, validMaskedPhoneLength } from '../utils/Validate';
 import { isNullUndefinedOrEmpty, maskPhoneNumber } from '../utils/String';
 import { DarkGrey, LemonYellow, LightGrey } from '../utils/Colors';
 
 const styles = StyleSheet.create({
     container: {
-        // flex: 1,
         marginHorizontal: 10,
         marginVertical: 20
     },
@@ -128,8 +127,8 @@ export default function ProfileScreen(props) {
             style={[ 
                 styles.container, 
                 colorScheme !== 'light'
-                ? { backgroundColor: DarkGrey }
-                : { backgroundColor: 'white' }
+                ? { backgroundColor: DarkGrey, color: 'white' }
+                : { backgroundColor: 'white', color: DarkGrey }
             ]}
             indicatorStyle='white'
             contentContainerStyle={{alignItems: 'center'}}
@@ -197,6 +196,7 @@ export default function ProfileScreen(props) {
                 <TextInput
                     ref={refs[1]}
                     keyboardType='numeric'
+                    maxLength={validMaskedPhoneLength}
                     placeholderTextColor={
                         isValidPhone(phone)
                             ? styles.formField.color
