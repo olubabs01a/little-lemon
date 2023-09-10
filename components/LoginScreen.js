@@ -94,6 +94,24 @@ export default function LoginScreen(props) {
     };
 
     useEffect(() => {
+        const sub$ = navigator.addListener('focus', () => {
+            props.setIsLoginScreen(true);
+        });
+
+        // Return the function to unsubscribe from the event so it gets removed on unmount.
+        return sub$;
+    }, [navigator]);
+    
+    useEffect(() => {
+        const sub$ = navigator.addListener('blur', () => {
+            props.setIsLoginScreen(false);
+        });
+
+        // Return the function to unsubscribe from the event so it gets removed on unmount.
+        return sub$;
+    }, [navigator]);
+
+    useEffect(() => {
         resetForm();
 
         return () => {

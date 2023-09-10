@@ -60,6 +60,7 @@ const appStyles = StyleSheet.create({
 
 export default function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
+  const [isLoginScreen, setIsLoginScreen] = useState(false);
   const colorScheme = useColorScheme();
   const LeftDrawer = createDrawerNavigator();
   const RightDrawer = createDrawerNavigator();
@@ -80,13 +81,14 @@ export default function App() {
   function LogoutDrawerContent(props) {
     const navigator = useNavigation();
     const defaultTextColor = colorScheme !== 'light' ? LightGrey : DarkGrey;
+    const defaultBackground = colorScheme !== 'light' ? DarkGrey : 'white';
 
     const renderActiveTint = () => {
       return isLoginScreen ? DarkGreen : defaultTextColor;
     };
 
     const renderActiveBackground = () => {
-      return isLoginScreen ? LemonYellow : DarkGrey;
+      return isLoginScreen ? LemonYellow : defaultBackground;
     };
 
     return (
@@ -107,20 +109,19 @@ export default function App() {
                 name='Profile'
                 accessibilityLabel={'View Profile'}
                 label={'View Profile'}
+
+                /** Workaround to simulate active appearance on route change */
+                inactiveBackgroundColor={renderActiveBackground()}
+                inactiveTintColor={renderActiveTint()}
+                allowFontScaling={true}
                 icon={props => 
                   <Icon
                     {...
-                      {...props, color: colorScheme !== 'light'
-                        ? LightGrey
-                        : DarkGrey
+                      {...props, color: renderActiveTint()
                     }
                   }
                     name='user-circle' />}
-                labelStyle={
-                  colorScheme !== 'light'
-                  ? { color: LightGrey, paddingLeft: 8 }
-                  : { color: DarkGrey, paddingLeft: 8 }
-                }
+                labelStyle={{ color: renderActiveTint(), paddingLeft: 8 }}
                 style={appStyles.logOutDrawerItem}
                 onPress={() => navigator.navigate('Profile')}
               />
@@ -129,21 +130,20 @@ export default function App() {
                 name='Login'
                 accessibilityLabel={'Login'}
                 label={'Login'}
-                activeBackgroundColor='yellow'
+                allowFontScaling={true}
+
+                /** Workaround to simulate active appearance on route change */
+                inactiveBackgroundColor={renderActiveBackground()}
+                inactiveTintColor={renderActiveTint()}
+
                 icon={props => 
                   <Icon
                     {...
-                      {...props, color: colorScheme !== 'light'
-                        ? LightGrey
-                        : DarkGrey
+                      {...props, color: renderActiveTint()
                     }
                   }
                     name='user' />}
-                labelStyle={
-                  colorScheme !== 'light'
-                  ? { color: LightGrey, paddingLeft: 8 }
-                  : { color: DarkGrey, paddingLeft: 8 }
-                }
+                labelStyle={{ color: renderActiveTint(), paddingLeft: 8 }}
                 style={appStyles.logOutDrawerItem}
                 onPress={() => navigator.navigate('Login')}
               />
@@ -182,7 +182,7 @@ export default function App() {
             backgroundColor: colorScheme !== 'light' ? DarkGrey : 'white'
           },
           drawerPosition: 'left',
-          drawerInactiveTintColor: colorScheme !== 'light' ? LightGrey : DarkGrey, 
+          drawerInactiveTintColor: colorScheme !== 'light' ? LightGrey : DarkGrey,
           headerRight: (props) => <MenuButton {...props} />
         }}>
         <LeftDrawer.Screen name='Login' options={{
@@ -191,14 +191,14 @@ export default function App() {
           /** hide this login button in drawer */
           drawerItemStyle: { display: 'none' }
         }}>
-          {(props) => <LoginScreen {...props} setLoggedIn={setLoggedIn} />}
+          {(props) => <LoginScreen {...props} setLoggedIn={setLoggedIn} setIsLoginScreen={setIsLoginScreen} />}
         </LeftDrawer.Screen>
         <LeftDrawer.Screen name='Profile' options={{
           headerRight: (props) => <LogInOutButton {...props} isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />,
           /** hide this profile button in drawer */
           drawerItemStyle: { display: 'none' }
         }}>
-          {(props) => <ProfileScreen {...props} isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />}
+          {(props) => <ProfileScreen {...props} isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} setIsLoginScreen={setIsLoginScreen} />}
         </LeftDrawer.Screen>
         <LeftDrawer.Screen name='Welcome' component={WelcomeScreen}
           options={{ title: 'Home', drawerIcon: (props) => <Icon {...props} name='home' /> }} />
