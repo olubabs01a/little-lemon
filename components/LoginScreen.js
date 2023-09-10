@@ -3,10 +3,10 @@ import { useEffect, useRef, useState } from 'react';
 import { isValidEmail, isValidPassword } from '../utils/Validate';
 import { useNavigation } from '@react-navigation/native';
 import { DarkGrey, LemonYellow, LightGrey } from '../utils/Colors';
+import { isNullUndefinedOrEmpty } from '../utils/String';
 
 const styles = StyleSheet.create({
     container: {
-        // flex: 1,
         marginHorizontal: 10,
         marginVertical: 20
     },
@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
         color: 'white'
     },
     formField: {
-        backgroundColor: 'white',
         paddingVertical: 15,
         margin: 10,
         paddingHorizontal: 10,
@@ -50,6 +49,7 @@ const styles = StyleSheet.create({
         borderRadius: 5
     },
     invalidInput: {
+        color: 'red',
         borderColor: 'red',
         borderBottomWidth: 2
     },
@@ -81,6 +81,18 @@ export default function LoginScreen(props) {
         setInputValidState(isValidEmail(emailInput) && isValidPassword(passwordInput));
     };
 
+    const renderFormFieldStyle = (isValid) => {
+        return colorScheme !== 'light'
+            // Handle styling if color scheme is not 'light'
+            ? (isValid
+                ? { ...styles.formField, color: 'white'}
+                : [ styles.formField, styles.invalidInput ])
+            // Handle styling if color scheme is 'light'
+            : (isValid
+                ? { ...styles.formField, color: DarkGrey }
+                : [ styles.formField, styles.invalidInput ]);
+    };
+
     useEffect(() => {
         resetForm();
 
@@ -90,7 +102,15 @@ export default function LoginScreen(props) {
     }, []);
 
     return (
-        <><ScrollView style={styles.container} indicatorStyle='white' contentContainerStyle={{ alignItems: 'center' }} enableOnAndroid={true} keyboardDismissMode='interactive' >
+        <><ScrollView style={[ 
+            styles.container, 
+            colorScheme !== 'light'
+            ? { backgroundColor: DarkGrey, color: 'white' }
+            : { backgroundColor: 'white', color: DarkGrey }
+        ]}
+            indicatorStyle='white'
+            contentContainerStyle={{ alignItems: 'center' }} enableOnAndroid={true}
+            keyboardDismissMode='interactive' >
             <Text
                 style={[ 
                     styles.header, 
@@ -112,13 +132,15 @@ export default function LoginScreen(props) {
                 </Text>
                 <TextInput
                     keyboardType='email-address'
-                    placeholderTextColor={styles.formField.color}
+                    placeholderTextColor={
+                        isNullUndefinedOrEmpty(email) === false
+                            ? styles.formField.color
+                            : styles.invalidInput.borderColor
+                    }
                     enterKeyHint='next'
                     returnKeyLabel='next'
                     autoCapitalize='none'
-                    style={isValidEmail(email)
-                            ? styles.formField
-                            : { ...styles.formField, ...styles.invalidInput }}
+                    style={renderFormFieldStyle(isValidEmail(email))}
                     onSubmitEditing={_ => passwordRef.current.focus()}
                     placeholder='Email'
                     inputMode='email'
@@ -132,13 +154,15 @@ export default function LoginScreen(props) {
                     ref={passwordRef}
                     placeholder='Password (>= 8 characters)'
                     autoCapitalize='none'
-                    placeholderTextColor={styles.formField.color}
+                    placeholderTextColor={
+                        isNullUndefinedOrEmpty(password) === false
+                            ? styles.formField.color
+                            : styles.invalidInput.borderColor
+                    }
                     enterKeyHint='done'
                     returnKeyLabel='done'
                     secureTextEntry={true}
-                    style={isValidPassword(password)
-                            ? styles.formField
-                            : { ...styles.formField, ...styles.invalidInput }}
+                    style={renderFormFieldStyle(isValidPassword(password))}
                     value={password}
                     onChangeText={(val) => {
                         setPassword(val);
