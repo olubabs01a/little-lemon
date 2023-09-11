@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { isNullUndefinedOrEmpty } from '../utils/String';
-import { DarkGrey, LightGrey, DarkGreen } from '../utils/Colors';
+import { DarkGrey, LightGrey, LemonYellow } from '../utils/Colors';
 import ThemeContext from '../context/ThemeContext';
 
 export default function ThemeButton(props) {
@@ -29,12 +29,10 @@ export default function ThemeButton(props) {
             backgroundColor: theme !== 'light' ? DarkGrey : 'white',
         },
         iconTextStyle: {
-            color: theme !== 'light' ? 'white' : DarkGrey,
             fontSize: 17,
             lineHeight: 20
         },
         iconStyle: {
-            color: theme !== 'light' ? 'white' : DarkGrey,
             padding: 5
         },
         selectedTextStyle: {
@@ -57,7 +55,7 @@ export default function ThemeButton(props) {
                 accessibilityLabel={'Theme Selection'}
                 style={styles.themeSelection}
                 containerStyle={styles.listSelection}
-                activeColor={theme !== 'light' ? DarkGreen : LightGrey}
+                activeColor={LemonYellow}
                 iconStyle={styles.iconStyle}
                 itemTextStyle={styles.itemTextStyle}
                 itemContainerStyle={styles.iconStyle}
@@ -69,14 +67,19 @@ export default function ThemeButton(props) {
                 value={theme}
                 onChange={item => { toggleTheme(item.value); }}
                 renderItem={(item, selected) => 
-                    <Icon {...props} name={item.icon} style={styles.iconStyle} size={20}>
-                        <Text style={styles.iconTextStyle}>
+                    <Icon {...props} 
+                        name={item.icon}
+                        accessibilityLabel={item.label}
+                        style={[ styles.iconStyle, selected && { color: DarkGrey }, !selected && theme !== 'light' && { color: LightGrey }]} 
+                        size={20}
+                    >
+                        <Text style={[ styles.iconTextStyle, selected && { color: DarkGrey }]}>
                             {` ${item.label} `}
                             {selected && (
                                 <Icon
                                     {...props}
                                     name={'check'}
-                                    style={styles.iconStyle}
+                                    style={[ styles.iconStyle, selected && { color: DarkGrey }]}
                                     size={15}
                                 />
                             )}
