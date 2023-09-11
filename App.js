@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Image, View, Text, useColorScheme, Platform } from 'react-native';
 import LogInOutButton from './components/LogInOutButton';
 import MenuButton from './components/MenuButton';
+import ThemeButton from './components/ThemeButton';
 import LittleLemonFooter from './components/LittleLemonFooter';
 import Welcome from './components/Welcome';
 import WelcomeScreen from './components/WelcomeScreen';
@@ -30,7 +31,7 @@ const appStyles = StyleSheet.create({
     alignSelf: 'center',
     maxWidth: 250,
     maxHeight: 250,
-    marginBottom: Platform.OS === 'ios' ? 100 : 150
+    marginBottom: Platform.OS === 'ios' ? 75 : 100
   },
   logOutDrawerItem: {
     borderRadius: 5
@@ -38,7 +39,7 @@ const appStyles = StyleSheet.create({
   logOutLink: {
     position: 'absolute',
     alignItems: 'flex-end',
-    marginVertical: 25,
+    marginVertical: Platform.OS === 'ios' ? 40 : 55,
     verticalAlign: 'middle',
     paddingHorizontal: 10,
     bottom: Platform.OS === 'ios' ? 9 : 11,
@@ -203,6 +204,10 @@ export default function App() {
               navigator.navigate(CustomDrawerSelection.Subscribe);
             }}
           />
+
+          <View style={{ marginBottom: 0 }}>
+            <ThemeButton />
+          </View>
         </DrawerContentScrollView>
       </SafeAreaView>
     );
