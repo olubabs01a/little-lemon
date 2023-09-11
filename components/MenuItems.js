@@ -126,6 +126,7 @@ function Separator() {
 export default function MenuItems() {
 	const { theme } = useContext(ThemeContext);
 
+	//TODO: Add scroll to each section via Dropdown menu footer component
 	return (
 		<View
 			style={[

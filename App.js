@@ -18,13 +18,14 @@ import {
 	createDrawerNavigator
 } from "@react-navigation/drawer";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { DarkGreen, DarkGrey, LemonYellow, LightGrey } from "./utils/Colors";
+import { DeepRed, DarkGreen, DarkGrey, LemonYellow, LightGrey } from "./utils/Colors";
 import ProfileScreen from "./components/ProfileScreen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CustomDrawerSelection } from "./components/types";
 import { isNullUndefinedOrEmpty } from "./utils/String";
 import ThemeContext, { ThemeProvider } from "./context/ThemeContext";
 
+//TODO: Create StyleContext to hold all styles, and effect theme changes
 const appStyles = StyleSheet.create({
 	body: {
 		flex: 1,
@@ -42,16 +43,18 @@ const appStyles = StyleSheet.create({
 	logOutDrawerItem: {
 		borderRadius: 5
 	},
-	logOutLink: {
+	logOutWrapper: {
 		position: "absolute",
-		alignItems: "flex-end",
-		marginVertical: Platform.OS === "ios" ? 40 : 55,
+		alignItems: "flex-start",
 		verticalAlign: "middle",
-		paddingHorizontal: 10,
-		bottom: Platform.OS === "ios" ? 9 : 11,
-		right: 5,
-		backgroundColor: "#B30000",
-		color: LightGrey,
+		left: 18,
+		bottom: 25
+	},
+	logOutLink: {
+		fontSize: 16,
+		textDecorationLine: "underline",
+		textDecorationStyle: "solid",
+		color: DeepRed,
 		fontWeight: "700"
 	},
 	navigatorOptions: {
@@ -110,7 +113,7 @@ export default function App() {
 						: defaultTextColor
 					: defaultTextColor;
 			},
-			[customDrawerSelection, navigator, theme]
+			[customDrawerSelection, navigator, theme, isLoggedIn]
 		);
 
 		const renderActiveBackground = useCallback(
@@ -121,7 +124,7 @@ export default function App() {
 						: defaultBackground
 					: defaultBackground;
 			},
-			[customDrawerSelection, navigator, theme]
+			[customDrawerSelection, navigator, theme, isLoggedIn]
 		);
 
 		return (
@@ -130,7 +133,7 @@ export default function App() {
 					flex: 1,
 					position: "absolute",
 					width: "100%",
-					bottom: 0,
+					marginBottom: Platform.OS === "ios" ? undefined : 0,
 					justifyContent: "space-between"
 				}}
 				forceInset={{ top: "always", horizontal: "never" }}>
@@ -148,108 +151,119 @@ export default function App() {
 				</DrawerContentScrollView>
 				<DrawerContentScrollView
 					{...props}
-					indicatorStyle={theme !== "light" ? "white" : "black"}
-					style={{ flex: 1, alignContent: "flex-end" }}>
-					{isLoggedIn ? (
-						<DrawerItem
-							name={CustomDrawerSelection.Profile}
-							accessibilityLabel={"View Profile"}
-							label={"View Profile"}
-							/** Workaround to simulate active appearance on route change */
-							inactiveBackgroundColor={renderActiveBackground(
-								CustomDrawerSelection.Profile
-							)}
-							inactiveTintColor={renderActiveTint(CustomDrawerSelection.Profile)}
-							allowFontScaling={true}
-							icon={(props) => (
-								<Icon
-									{...{
-										...props,
-										color: renderActiveTint(CustomDrawerSelection.Profile)
-									}}
-									name='user-circle'
-								/>
-							)}
-							labelStyle={{
-								color: renderActiveTint(CustomDrawerSelection.Profile),
-								paddingLeft: 0
-							}}
-							style={appStyles.logOutDrawerItem}
-							onPress={() => {
-								navigator.navigate(CustomDrawerSelection.Profile);
-							}}
-						/>
-					) : (
-						<DrawerItem
-							name={CustomDrawerSelection.Login}
-							accessibilityLabel={"Login"}
-							label={"Login"}
-							allowFontScaling={true}
-							/** Workaround to simulate active appearance on route change */
-							inactiveBackgroundColor={renderActiveBackground(
-								CustomDrawerSelection.Login
-							)}
-							inactiveTintColor={renderActiveTint(CustomDrawerSelection.Login)}
-							icon={(props) => (
-								<Icon
-									{...{
-										...props,
-										color: renderActiveTint(CustomDrawerSelection.Login)
-									}}
-									name='user'
-								/>
-							)}
-							labelStyle={{
-								color: renderActiveTint(CustomDrawerSelection.Login),
-								paddingLeft: 8
-							}}
-							style={appStyles.logOutDrawerItem}
-							onPress={() => {
-								navigator.navigate(CustomDrawerSelection.Login);
-							}}
-						/>
-					)}
-					{isLoggedIn && (
-						<Pressable
-							accessibilityLabel={"Log out"}
-							style={{ ...appStyles.button, ...appStyles.logOutLink }}
-							onPress={() => {
-								setLoggedIn(false);
-							}}>
-							<Text style={appStyles.logOutLink}>Log out</Text>
-						</Pressable>
-					)}
-
-					<DrawerItem
-						name={CustomDrawerSelection.Subscribe}
-						accessibilityLabel={"Subscribe to our Newsletter"}
-						label={"Newsletter"}
-						allowFontScaling={true}
-						/** Workaround to simulate active appearance on route change */
-						inactiveBackgroundColor={renderActiveBackground(
-							CustomDrawerSelection.Subscribe
-						)}
-						inactiveTintColor={renderActiveTint(CustomDrawerSelection.Subscribe)}
-						icon={(props) => (
-							<Icon
-								{...{
-									...props,
-									color: renderActiveTint(CustomDrawerSelection.Subscribe)
+					indicatorStyle={theme !== "light" ? "white" : "black"}>
+					<View
+						style={Platform.OS === "ios" ? { marginTop: -20, paddingBottom: 15 } : {}}>
+						{isLoggedIn ? (
+							<DrawerItem
+								name={CustomDrawerSelection.Profile}
+								accessibilityLabel={"View Profile"}
+								label={"View Profile"}
+								/** Workaround to simulate active appearance on route change */
+								inactiveBackgroundColor={renderActiveBackground(
+									CustomDrawerSelection.Profile
+								)}
+								inactiveTintColor={renderActiveTint(CustomDrawerSelection.Profile)}
+								allowFontScaling={true}
+								icon={(props) => (
+									<Icon
+										{...{
+											...props,
+											color: renderActiveTint(CustomDrawerSelection.Profile)
+										}}
+										name='user-circle'
+									/>
+								)}
+								labelStyle={{
+									color: renderActiveTint(CustomDrawerSelection.Profile),
+									paddingLeft: 0
 								}}
-								name='envelope'
+								style={appStyles.logOutDrawerItem}
+								onPress={() => {
+									navigator.navigate(CustomDrawerSelection.Profile);
+								}}
+							/>
+						) : (
+							<DrawerItem
+								name={CustomDrawerSelection.Login}
+								accessibilityLabel={"Login"}
+								label={"Login"}
+								allowFontScaling={true}
+								/** Workaround to simulate active appearance on route change */
+								inactiveBackgroundColor={renderActiveBackground(
+									CustomDrawerSelection.Login
+								)}
+								inactiveTintColor={renderActiveTint(CustomDrawerSelection.Login)}
+								icon={(props) => (
+									<Icon
+										{...{
+											...props,
+											color: renderActiveTint(CustomDrawerSelection.Login)
+										}}
+										name='user'
+									/>
+								)}
+								labelStyle={{
+									color: renderActiveTint(CustomDrawerSelection.Login),
+									paddingLeft: 8
+								}}
+								style={appStyles.logOutDrawerItem}
+								onPress={() => {
+									navigator.navigate(CustomDrawerSelection.Login);
+								}}
 							/>
 						)}
-						labelStyle={{
-							color: renderActiveTint(CustomDrawerSelection.Subscribe),
-							paddingLeft: 1
-						}}
-						style={appStyles.logOutDrawerItem}
-						onPress={() => {
-							navigator.navigate(CustomDrawerSelection.Subscribe);
-						}}
-					/>
 
-					<View style={{ marginBottom: 0 }}>
+						<DrawerItem
+							name={CustomDrawerSelection.Subscribe}
+							accessibilityLabel={"Subscribe to our Newsletter"}
+							label={"Newsletter"}
+							allowFontScaling={true}
+							/** Workaround to simulate active appearance on route change */
+							inactiveBackgroundColor={renderActiveBackground(
+								CustomDrawerSelection.Subscribe
+							)}
+							inactiveTintColor={renderActiveTint(CustomDrawerSelection.Subscribe)}
+							icon={(props) => (
+								<Icon
+									{...{
+										...props,
+										color: renderActiveTint(CustomDrawerSelection.Subscribe)
+									}}
+									name='envelope'
+								/>
+							)}
+							labelStyle={{
+								color: renderActiveTint(CustomDrawerSelection.Subscribe),
+								paddingLeft: 1
+							}}
+							style={appStyles.logOutDrawerItem}
+							onPress={() => {
+								navigator.navigate(CustomDrawerSelection.Subscribe);
+							}}
+						/>
+					</View>
+
+					<View style={{ marginTop: Platform.OS === "ios" ? -25 : -5 }}>
+						{isLoggedIn && (
+							<Pressable
+								accessibilityLabel={"Log out"}
+								style={{ ...appStyles.button, ...appStyles.logOutWrapper }}
+								onPress={() => {
+									setLoggedIn(false);
+								}}>
+								<LogInOutButton
+									{...props}
+									hideLogo={true}
+									textOnlyStyle={{
+										...appStyles.logOutLink,
+										color: theme !== "light" ? LightGrey : DeepRed
+									}}
+									isLoggedIn={isLoggedIn}
+									setLoggedIn={setLoggedIn}
+								/>
+							</Pressable>
+						)}
 						<ThemeButton />
 					</View>
 				</DrawerContentScrollView>
@@ -296,6 +310,7 @@ export default function App() {
 						{(props) => (
 							<LoginScreen
 								{...props}
+								isLoggedIn={isLoggedIn}
 								setLoggedIn={setLoggedIn}
 								setCustomDrawerSelection={setCustomDrawerSelection}
 							/>

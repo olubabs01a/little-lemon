@@ -68,7 +68,6 @@ export default function LoginScreen(props) {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [hasValidInput, setInputValidState] = useState(false);
-	const [isLoggedIn, setLoggedIn] = useState(false);
 	const { theme } = useContext(ThemeContext);
 	const passwordRef = useRef();
 
@@ -122,7 +121,7 @@ export default function LoginScreen(props) {
 					]}>
 					Welcome to Little Lemon
 				</Text>
-				{isLoggedIn === false && (
+				{props.isLoggedIn === false && (
 					<>
 						<Text
 							style={[
@@ -183,6 +182,7 @@ export default function LoginScreen(props) {
 									  }
 							}
 							onPress={(_) => {
+								props.setCustomDrawerSelection(CustomDrawerSelection.None);
 								props.setLoggedIn(true);
 								props.navigation.navigate("Welcome");
 							}}>

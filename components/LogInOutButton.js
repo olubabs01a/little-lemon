@@ -15,17 +15,22 @@ export default function LogInOutButton(props) {
 		}
 	});
 
+	const renderText = () => (props.isLoggedIn ? "Log out" : "Login");
+	const renderIcon = () => (props.isLoggedIn ? "user-circle" : "user");
+
 	return (
 		<Pressable
-			accessibilityLabel={props.isLoggedIn ? "Log out" : "Login"}
+			accessibilityLabel={renderText()}
 			onPress={() => {
 				props.isLoggedIn ? props.setLoggedIn(false) : navigator.navigate("Login");
 			}}>
-			<Icon
-				style={{ ...styles.loggedIn, color: props.tintColor }}
-				name={props.isLoggedIn ? "user-circle" : "user"}>
-				<Text>{props.isLoggedIn ? " Log Out" : " Login"}</Text>
-			</Icon>
+			{props.hideLogo ? (
+				<Text style={props.textOnlyStyle}>{renderText()}</Text>
+			) : (
+				<Icon style={{ ...styles.loggedIn, color: props.tintColor }} name={renderIcon()}>
+					<Text>{` ${renderText()}`}</Text>
+				</Icon>
+			)}
 		</Pressable>
 	);
 }
