@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
 	},
 	subtitle: {
 		fontSize: 18,
-		fontStyle: "italic",
 		color: LemonYellow,
 		textAlign: "center",
 		flexWrap: "wrap"

@@ -73,6 +73,7 @@ const appStyles = StyleSheet.create({
 });
 
 export default function App() {
+  //TODO: Create UserContext to replace props
 	const [isLoggedIn, setLoggedIn] = useState(false);
 	const LeftDrawer = createDrawerNavigator();
 	const RightDrawer = createDrawerNavigator();

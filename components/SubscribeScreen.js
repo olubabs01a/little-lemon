@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 		resizeMode: "contain"
 	},
 	body: {
-		margin: 15,
+		margin: 10,
 		paddingVertical: 20,
 		fontSize: 20,
 		textAlign: "center",
