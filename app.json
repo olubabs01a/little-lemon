@@ -3,7 +3,7 @@
     "name": "little-lemon",
     "slug": "little-lemon",
     "version": "1.0.0",
-    "orientation": "default",
+    "orientation": "portrait",
     "icon": "./assets/little-lemon-logo-grey.png",
     "userInterfaceStyle": "automatic",
     "splash": {
