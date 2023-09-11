@@ -1,6 +1,6 @@
 export const CustomDrawerSelection = {
-    None: "",
+	None: "",
 	Login: "Login",
 	Profile: "Profile",
 	Subscribe: "Subscribe"
-}
+};

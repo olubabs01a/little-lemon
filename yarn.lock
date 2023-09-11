@@ -7046,7 +7046,7 @@ pretty-format@^26.5.2, pretty-format@^26.6.2:
 
 pretty-format@^29.6.3:
   version "29.6.3"
-  resolved "https://registry.npmjs.org/pretty-format/-/pretty-format-29.6.3.tgz"
+  resolved "https://registry.yarnpkg.com/pretty-format/-/pretty-format-29.6.3.tgz#d432bb4f1ca6f9463410c3fb25a0ba88e594ace7"
   integrity sha512-ZsBgjVhFAj5KeK+nHfF1305/By3lechHQSMWCTl8iHSbfOm2TN5nHEtFc/+W7fAyUeCs2n5iow72gld4gW0xDw==
   dependencies:
     "@jest/schemas" "^29.6.3"
