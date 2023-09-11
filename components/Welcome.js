@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
-import { Image, StyleSheet, Text, ScrollView, Pressable, useColorScheme } from 'react-native';
+import React, { useContext, useEffect } from 'react';
+import { Image, StyleSheet, Text, ScrollView, Pressable } from 'react-native';
 import { DarkGrey, LemonYellow } from '../utils/Colors';
 import { CustomDrawerSelection } from './types';
+import ThemeContext from '../context/ThemeContext';
 
 const Welcome = (props) => {
-  const colorScheme = useColorScheme();
+  const {theme} = useContext(ThemeContext);
 
   useEffect(() => {
     props.setCustomDrawerSelection(CustomDrawerSelection.None);
@@ -13,7 +14,7 @@ const Welcome = (props) => {
   return (
     <ScrollView 
       style={[ styles.container, 
-        colorScheme !== 'light'
+        theme !== 'light'
           ? { backgroundColor: DarkGrey, color: 'white' }
           : { backgroundColor: 'white', color: DarkGrey }
     ]} 
@@ -25,7 +26,7 @@ const Welcome = (props) => {
         accessibilityLabel={'Little Lemon logo'}
         source={require('../assets/little-lemon-logo.png')} />
       <Text style={[styles.title, 
-                    colorScheme !== 'light'
+                    theme !== 'light'
                       ? { color: 'white' }
                       : { color: DarkGrey }
       ]}>

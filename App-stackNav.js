@@ -1,14 +1,15 @@
-import { StyleSheet, View, useColorScheme } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import LogInOutButton from './components/LogInOutButton';
 import LittleLemonFooter from './components/LittleLemonFooter';
 import WelcomeScreen from './components/WelcomeScreen';
 import MenuItems from './components/MenuItems';
 import FeedbackForm from './components/FeedbackForm';
 import LoginScreen from './components/LoginScreen';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { DarkGreen, DarkGrey } from './utils/Colors';
+import ThemeContext from './context/ThemeContext';
 
 const appStyles = StyleSheet.create({
   header: {
@@ -38,7 +39,7 @@ export default function App() {
   const [isMenuActive, shouldShowMenu] = useState(false);
   const [isLoggedIn, setLoggedIn] = useState(false);
 
-  const colorScheme = useColorScheme();
+  const {theme} = useContext(ThemeContext);
   const Stack = createStackNavigator();
 
   const renderMenuItems = useCallback(() => {
@@ -49,7 +50,7 @@ export default function App() {
     <><NavigationContainer>
         <View style={[ 
           appStyles.body, 
-          colorScheme !== 'light' 
+          theme !== 'light' 
             ? { backgroundColor: DarkGrey, color: 'white' }
             : { backgroundColor: 'white', color: DarkGrey }
         ]}>

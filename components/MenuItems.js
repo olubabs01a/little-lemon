@@ -1,5 +1,7 @@
-import { View, Text, StyleSheet, SectionList, useColorScheme } from 'react-native';
+import { View, Text, StyleSheet, SectionList } from 'react-native';
 import { DarkGrey, LemonYellow } from '../utils/Colors';
+import { useContext } from 'react';
+import ThemeContext from '../context/ThemeContext';
 
 const menuItemsToDisplay = [
     {
@@ -95,11 +97,11 @@ const menuStyles = StyleSheet.create({
 });
 
 function Header () {
-    const colorScheme = useColorScheme();
+    const {theme} = useContext(ThemeContext);
 
     return <Text style={[ 
                 menuStyles.header, 
-                colorScheme !== 'light' 
+                theme !== 'light' 
                 ? { color: 'white', opacity: 1 }
                 : { color: DarkGrey }
             ]}>
@@ -108,12 +110,12 @@ function Header () {
 }
 
 function Separator() {
-    const colorScheme = useColorScheme();
+    const {theme} = useContext(ThemeContext);
 
     return (
         <View style={[ 
             menuStyles.separator, 
-            colorScheme !== 'light' 
+            theme !== 'light' 
             ? { backgroundColor: 'white' }
             : { backgroundColor: DarkGrey }
         ]} />
@@ -121,12 +123,12 @@ function Separator() {
 }
 
 export default function MenuItems() {
-    const colorScheme = useColorScheme();
+    const {theme} = useContext(ThemeContext);
 
     return (
         <View style={[ 
             menuStyles.container, 
-            colorScheme !== 'light' 
+            theme !== 'light' 
             ? { backgroundColor: DarkGrey }
             : { backgroundColor: 'white' }
         ]}>
@@ -144,7 +146,7 @@ export default function MenuItems() {
                     ({section: {note}}) => note && <View>
                         <Text style={[ 
                             menuStyles.sectionFooter, 
-                            colorScheme !== 'light' 
+                            theme !== 'light' 
                             ? { color: LemonYellow } //Coral }
                             : { color: DarkGrey }
                         ]}>{note}</Text>
@@ -154,13 +156,13 @@ export default function MenuItems() {
                     ({item}) => <View style={menuStyles.innerContainer}>
                         <Text style={[ 
                             menuStyles.menuItem, 
-                            colorScheme !== 'light' 
+                            theme !== 'light' 
                             ? { color: 'white' }
                             : { color: DarkGrey }
                         ]}>{item.name}</Text>
                         <Text style={[ 
                             menuStyles.menuItem, 
-                            colorScheme !== 'light' 
+                            theme !== 'light' 
                             ? { color: 'white' }
                             : { color: DarkGrey }
                         ]}>{item.price}</Text>

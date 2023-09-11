@@ -1,8 +1,9 @@
-import { StyleSheet, Pressable, View, Text, Image, useColorScheme } from 'react-native';
+import { StyleSheet, Pressable, View, Text, Image } from 'react-native';
 import { LemonYellow, DarkGrey } from '../utils/Colors';
 import { ScrollView } from 'react-native-gesture-handler';
 import { CustomDrawerSelection } from './types';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
+import ThemeContext from '../context/ThemeContext';
 
 const styles = StyleSheet.create({
     container: {
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
 });
 
 export default function WelcomeScreen (props) {
-    const colorScheme = useColorScheme();
+    const {theme} = useContext(ThemeContext);
 
     useEffect(() => {
         props.setCustomDrawerSelection(CustomDrawerSelection.None);
@@ -69,7 +70,7 @@ export default function WelcomeScreen (props) {
     return (
         <><ScrollView style={[
             styles.container,
-            colorScheme !== 'light'
+            theme !== 'light'
                 ? { backgroundColor: DarkGrey, color: 'white' }
                 : { backgroundColor: 'white', color: DarkGrey }
         ]} indicatorStyle='white'>
@@ -80,7 +81,7 @@ export default function WelcomeScreen (props) {
                     resizeMode='cover' style={styles.logo} source={require('../img/lemonLogo.png')} />
                 <Text
                     style={[styles.header,
-                        colorScheme !== 'light'
+                        theme !== 'light'
                         ? { color: 'white' }
                         : { color: DarkGrey }
                     ]}>
@@ -90,7 +91,7 @@ export default function WelcomeScreen (props) {
             <Text
                 style={[
                     styles.body,
-                    colorScheme !== 'light'
+                    theme !== 'light'
                         ? { color: 'white' }
                         : { color: DarkGrey }
                     ]}>

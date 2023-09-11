@@ -1,10 +1,11 @@
-import { StyleSheet, Text, TextInput, useColorScheme, Pressable, View } from 'react-native';
+import { StyleSheet, Text, TextInput, Pressable, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { isValidEmail, isValidPassword, isValidPhone, validMaskedPhoneLength } from '../utils/Validate';
 import { isNullUndefinedOrEmpty, maskPhoneNumber } from '../utils/String';
 import { DarkGrey, LemonYellow, LightGrey } from '../utils/Colors';
 import { CustomDrawerSelection } from './types';
+import ThemeContext from '../context/ThemeContext';
 
 const styles = StyleSheet.create({
     container: {
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2
     },
     submitButton: {
-        backgroundColor: LemonYellow, //Coral,
+        backgroundColor: LemonYellow,
         padding: 10,
         marginVertical: 30,
         minHeight: 40,
@@ -73,7 +74,7 @@ export default function ProfileScreen(props) {
     const [newPassword, setNewPassword] = useState("");
     const [hasValidInput, setInputValidState] = useState(false);
 
-    const colorScheme = useColorScheme();
+    const {theme} = useContext(ThemeContext);
     const refs = [
         useRef(),
         useRef(),
@@ -92,7 +93,7 @@ export default function ProfileScreen(props) {
     };
 
     const renderFormFieldStyle = (isValid) => {
-        return colorScheme !== 'light'
+        return theme !== 'light'
             // Handle styling if color scheme is not 'light'
             ? (isValid
                 ? { ...styles.formField, color: 'white'}
@@ -128,7 +129,7 @@ export default function ProfileScreen(props) {
         <><KeyboardAwareScrollView
             style={[ 
                 styles.container, 
-                colorScheme !== 'light'
+                theme !== 'light'
                 ? { backgroundColor: DarkGrey, color: 'white' }
                 : { backgroundColor: 'white', color: DarkGrey }
             ]}
@@ -140,19 +141,19 @@ export default function ProfileScreen(props) {
             <Text
                 style={[ 
                     styles.header, 
-                    colorScheme !== 'light' 
+                    theme !== 'light' 
                     ? { color: 'white' }
                     : { color: DarkGrey }
                 ]}>
                 Hi, {firstName}!
             </Text>
             <View style={[styles.body, 
-                        colorScheme !== 'light' 
+                        theme !== 'light' 
                         ? { color: 'white' }
                         : { color: DarkGrey }
                     ]}>
                 <Text style={[styles.subtitle, 
-                        colorScheme !== 'light' 
+                        theme !== 'light' 
                         ? { color: 'white' }
                         : { color: DarkGrey }
                     ]}>Verify account information</Text>

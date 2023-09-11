@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Image, View, Text, useColorScheme, Platform } from 'react-native';
+import { Pressable, StyleSheet, Image, View, Text, Platform } from 'react-native';
 import LogInOutButton from './components/LogInOutButton';
 import MenuButton from './components/MenuButton';
 import ThemeButton from './components/ThemeButton';
@@ -18,7 +18,7 @@ import ProfileScreen from './components/ProfileScreen';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CustomDrawerSelection } from './components/types';
 import { isNullUndefinedOrEmpty } from './utils/String';
-import { ThemeProvider } from './context/ThemeContext';
+import ThemeContext, { ThemeProvider } from './context/ThemeContext';
 
 const appStyles = StyleSheet.create({
   body: {
@@ -66,7 +66,6 @@ const appStyles = StyleSheet.create({
 
 export default function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
-  const colorScheme = useColorScheme();
   const LeftDrawer = createDrawerNavigator();
   const RightDrawer = createDrawerNavigator();
   let customDrawerSelection = CustomDrawerSelection.None;
@@ -89,9 +88,10 @@ export default function App() {
   }, [customDrawerSelection]);
 
   function LogoutDrawerContent(props) {
+    const {theme} = useContext(ThemeContext);
     const navigator = useNavigation();
-    const defaultTextColor = colorScheme !== 'light' ? LightGrey : DarkGrey;
-    const defaultBackground = colorScheme !== 'light' ? DarkGrey : 'white';
+    const defaultTextColor = theme !== 'light' ? LightGrey : DarkGrey;
+    const defaultBackground = theme !== 'light' ? DarkGrey : 'white';
 
     const renderActiveTint = useCallback((routeName) => {
       return isNullUndefinedOrEmpty(customDrawerSelection) === false
@@ -99,7 +99,7 @@ export default function App() {
           ? DarkGreen
           : defaultTextColor)
         : defaultTextColor;
-    }, [customDrawerSelection, navigator]);
+    }, [customDrawerSelection, navigator, theme]);
 
     const renderActiveBackground = useCallback((routeName) => {
       return isNullUndefinedOrEmpty(customDrawerSelection) === false
@@ -107,7 +107,7 @@ export default function App() {
           ? LemonYellow
           : defaultBackground)
         : defaultBackground;
-    }, [customDrawerSelection, navigator]);
+    }, [customDrawerSelection, navigator, theme]);
 
     return (
       <SafeAreaView style={{ flex: 1, position: 'absolute', width: '100%', bottom: 0, justifyContent: 'space-between' }} forceInset={{top: "always", horizontal: "never"}}>
@@ -215,9 +215,11 @@ export default function App() {
   }
 
   const LeftDrawerScreens = () => {
+    const {theme} = useContext(ThemeContext);
+
     return (<View style={[ 
       appStyles.body, 
-      colorScheme !== 'light' 
+      theme !== 'light' 
         ? { backgroundColor: DarkGrey, color: 'white' }
         : { backgroundColor: 'white', color: DarkGrey }
     ]}>
@@ -231,10 +233,10 @@ export default function App() {
           drawerAllowFontScaling: true,
           headerTitleAllowFontScaling: true,
           drawerStyle: {
-            backgroundColor: colorScheme !== 'light' ? DarkGrey : 'white'
+            backgroundColor: theme !== 'light' ? DarkGrey : 'white'
           },
           drawerPosition: 'left',
-          drawerInactiveTintColor: colorScheme !== 'light' ? LightGrey : DarkGrey,
+          drawerInactiveTintColor: theme !== 'light' ? LightGrey : DarkGrey,
           headerRight: (props) => <MenuButton {...props} />
         }}>
         <LeftDrawer.Screen name='Login' options={{

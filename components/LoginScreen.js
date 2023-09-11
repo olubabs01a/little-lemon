@@ -1,9 +1,10 @@
-import { StyleSheet, ScrollView, Text, TextInput, useColorScheme, Pressable } from 'react-native';
-import { useEffect, useRef, useState } from 'react';
+import { StyleSheet, ScrollView, Text, TextInput, Pressable } from 'react-native';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { isValidEmail, isValidPassword } from '../utils/Validate';
 import { DarkGrey, LemonYellow, LightGrey } from '../utils/Colors';
 import { isNullUndefinedOrEmpty } from '../utils/String';
 import { CustomDrawerSelection } from './types';
+import ThemeContext from '../context/ThemeContext';
 
 const styles = StyleSheet.create({
     container: {
@@ -68,7 +69,7 @@ export default function LoginScreen(props) {
     const [password, setPassword] = useState("");
     const [hasValidInput, setInputValidState] = useState(false);
     const [isLoggedIn, setLoggedIn] = useState(false);
-    const colorScheme = useColorScheme();
+    const {theme} = useContext(ThemeContext);
     const passwordRef = useRef();
 
     const resetForm = () => {
@@ -81,7 +82,7 @@ export default function LoginScreen(props) {
     };
 
     const renderFormFieldStyle = (isValid) => {
-        return colorScheme !== 'light'
+        return theme !== 'light'
             // Handle styling if color scheme is not 'light'
             ? (isValid
                 ? { ...styles.formField, color: 'white'}
@@ -104,7 +105,7 @@ export default function LoginScreen(props) {
     return (
         <><ScrollView style={[ 
             styles.container, 
-            colorScheme !== 'light'
+            theme !== 'light'
             ? { backgroundColor: DarkGrey, color: 'white' }
             : { backgroundColor: 'white', color: DarkGrey }
         ]}
@@ -114,7 +115,7 @@ export default function LoginScreen(props) {
             <Text
                 style={[ 
                     styles.header, 
-                    colorScheme !== 'light' 
+                    theme !== 'light' 
                     ? { color: 'white' }
                     : { color: DarkGrey }
                 ]}>
@@ -124,7 +125,7 @@ export default function LoginScreen(props) {
                 && (<><Text
                     style={[ 
                         styles.body, 
-                        colorScheme !== 'light' 
+                        theme !== 'light' 
                         ? { color: 'white' }
                         : { color: DarkGrey }
                     ]}>

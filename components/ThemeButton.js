@@ -7,6 +7,8 @@ import { DarkGrey, LightGrey, DarkGreen } from '../utils/Colors';
 import ThemeContext from '../context/ThemeContext';
 
 export default function ThemeButton(props) {
+    const {theme, toggleTheme} = useContext(ThemeContext);
+
     const styles = StyleSheet.create({
         container: {
             flex: 1,
@@ -18,13 +20,13 @@ export default function ThemeButton(props) {
             margin: 20,
             minWidth: 100,
             maxHeight: 100,
-            borderBottomColor: LightGrey,
+            borderBottomColor: theme !== 'light' ? LightGrey : DarkGrey,
             borderBottomWidth: .5,
             elevation: 1
         },
         listSelection: {
             color: theme !== 'light' ? DarkGrey : 'white',
-            backgroundColor: theme !== 'light' ? DarkGrey : LightGrey,
+            backgroundColor: theme !== 'light' ? DarkGrey : 'white',
         },
         iconTextStyle: {
             color: theme !== 'light' ? 'white' : DarkGrey,
@@ -42,7 +44,6 @@ export default function ThemeButton(props) {
         }
     });
 
-    const {theme, toggleTheme} = useContext(ThemeContext);
     const themeData = [
         { label: 'Dark', value: 'dark', icon: 'circle' },
         { label: 'Light', value: 'light', icon: 'circle-o' }
@@ -56,7 +57,7 @@ export default function ThemeButton(props) {
                 accessibilityLabel={'Theme Selection'}
                 style={styles.themeSelection}
                 containerStyle={styles.listSelection}
-                activeColor={DarkGreen}
+                activeColor={theme !== 'light' ? DarkGreen : LightGrey}
                 iconStyle={styles.iconStyle}
                 itemTextStyle={styles.itemTextStyle}
                 itemContainerStyle={styles.iconStyle}

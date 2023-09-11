@@ -1,9 +1,10 @@
-import { Alert, Image, StyleSheet, ScrollView, Text, TextInput, useColorScheme, Pressable } from 'react-native';
-import { useEffect, useState } from 'react';
+import { Alert, Image, StyleSheet, ScrollView, Text, TextInput, Pressable } from 'react-native';
+import { useContext, useEffect, useState } from 'react';
 import { isValidEmail } from '../utils/Validate';
 import { DarkGrey, LemonYellow, LightGrey } from '../utils/Colors';
 import { isNullUndefinedOrEmpty } from '../utils/String';
 import { CustomDrawerSelection } from './types';
+import ThemeContext from '../context/ThemeContext';
 
 const styles = StyleSheet.create({
     container: {
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
 export default function SubscribeScreen(props) {
     const [email, setEmail] = useState("");
     const [hasValidInput, setInputValidState] = useState(false);
-    const colorScheme = useColorScheme();
+    const {theme} = useContext(ThemeContext);
 
     const resetForm = () => {
         setInputValidState(false);
@@ -71,7 +72,7 @@ export default function SubscribeScreen(props) {
     };
 
     const renderFormFieldStyle = (isValid) => {
-        return colorScheme !== 'light'
+        return theme !== 'light'
             // Handle styling if color scheme is not 'light'
             ? (isValid
                 ? { ...styles.formField, color: 'white'}
@@ -99,7 +100,7 @@ export default function SubscribeScreen(props) {
     return (
         <><ScrollView style={[ 
             styles.container, 
-            colorScheme !== 'light'
+            theme !== 'light'
             ? { backgroundColor: DarkGrey, color: 'white' }
             : { backgroundColor: 'white', color: DarkGrey }
         ]}
@@ -115,7 +116,7 @@ export default function SubscribeScreen(props) {
             <Text
                 style={[ 
                     styles.body, 
-                    colorScheme !== 'light' 
+                    theme !== 'light' 
                     ? { color: 'white' }
                     : { color: DarkGrey }
                 ]}>
