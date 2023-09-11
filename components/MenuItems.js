@@ -178,7 +178,7 @@ export default function MenuItems() {
 				contentContainerStyle={menuStyles.listStyle}
 				stickySectionHeadersEnabled={true}
 				showsVerticalScrollIndicator={true}
-				indicatorStyle={"white"}
+				indicatorStyle={theme !== "light" ? "white" : "black"}
 				keyExtractor={(item, index) => item + index}
 			/>
 		</View>

@@ -111,7 +111,7 @@ export default function LoginScreen(props) {
 						? { backgroundColor: DarkGrey, color: "white" }
 						: { backgroundColor: "white", color: DarkGrey }
 				]}
-				indicatorStyle='white'
+				indicatorStyle={theme !== "light" ? "white" : "black"}
 				contentContainerStyle={{ alignItems: "center" }}
 				enableOnAndroid={true}
 				keyboardDismissMode='interactive'>

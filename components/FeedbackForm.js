@@ -160,8 +160,8 @@ export default function FeedbackForm(props) {
 						? { backgroundColor: DarkGrey, color: "white" }
 						: { backgroundColor: "white", color: DarkGrey }
 				]}
-				indicatorStyle='white'
-				contentContainerStyle={{ flex: 1, alignItems: "center" }}
+				indicatorStyle={theme !== "light" ? "white" : "black"}
+				contentContainerStyle={{ alignItems: "center" }}
 				enableOnAndroid={true}
 				enableAutomaticScroll={true}
 				keyboardDismissMode='interactive'>

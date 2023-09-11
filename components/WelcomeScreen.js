@@ -76,7 +76,7 @@ export default function WelcomeScreen(props) {
 						? { backgroundColor: DarkGrey, color: "white" }
 						: { backgroundColor: "white", color: DarkGrey }
 				]}
-				indicatorStyle='white'>
+				indicatorStyle={theme !== "light" ? "white" : "black"}>
 				<View style={styles.headerWrapper}>
 					<Image
 						accessible={true}

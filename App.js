@@ -141,10 +141,15 @@ export default function App() {
 					accessibilityLabel={"Little Lemon logo"}
 					source={require("./img/littleLemonLogo.png")}
 				/>
-				<DrawerContentScrollView {...props}>
+				<DrawerContentScrollView
+					{...props}
+					indicatorStyle={theme !== "light" ? "white" : "black"}>
 					<DrawerItemList {...props} />
 				</DrawerContentScrollView>
-				<DrawerContentScrollView {...props} style={{ flex: 1, alignContent: "flex-end" }}>
+				<DrawerContentScrollView
+					{...props}
+					indicatorStyle={theme !== "light" ? "white" : "black"}
+					style={{ flex: 1, alignContent: "flex-end" }}>
 					{isLoggedIn ? (
 						<DrawerItem
 							name={CustomDrawerSelection.Profile}
@@ -356,6 +361,7 @@ export default function App() {
 					<LeftDrawer.Screen
 						name='Feedback'
 						options={{
+							unmountOnBlur: true,
 							title: "Feedback",
 							drawerIcon: (props) => <Icon {...props} name='comments' />
 						}}>
