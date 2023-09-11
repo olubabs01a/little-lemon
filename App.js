@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Image, View, Text, Platform } from "react-native";
+import { Pressable, StyleSheet, Image, View, Platform } from "react-native";
 import LogInOutButton from "./components/LogInOutButton";
 import MenuButton from "./components/MenuButton";
 import ThemeButton from "./components/ThemeButton";
@@ -48,7 +48,8 @@ const appStyles = StyleSheet.create({
 		alignItems: "flex-start",
 		verticalAlign: "middle",
 		left: 18,
-		bottom: 25
+		bottom: 25,
+    zIndex: 1
 	},
 	logOutLink: {
 		fontSize: 16,
@@ -73,7 +74,7 @@ const appStyles = StyleSheet.create({
 });
 
 export default function App() {
-  //TODO: Create UserContext to replace props
+	//TODO: Create UserContext to replace props
 	const [isLoggedIn, setLoggedIn] = useState(false);
 	const LeftDrawer = createDrawerNavigator();
 	const RightDrawer = createDrawerNavigator();
@@ -97,7 +98,7 @@ export default function App() {
 		(updatedRoute) => {
 			customDrawerSelection = updatedRoute;
 		},
-		[customDrawerSelection]
+		[customDrawerSelection, isLoggedIn]
 	);
 
 	function LogoutDrawerContent(props) {
