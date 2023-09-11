@@ -1,9 +1,10 @@
-import { useState } from 'react';
-import { Pressable, StyleSheet, Text, View, useColorScheme, setColorScheme } from 'react-native';
+import { useContext } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { isNullUndefinedOrEmpty } from '../utils/String';
-import { DarkGrey, LightGrey, LemonYellow, DarkGreen } from '../utils/Colors';
+import { DarkGrey, LightGrey, DarkGreen } from '../utils/Colors';
+import ThemeContext from '../context/ThemeContext';
 
 export default function ThemeButton(props) {
     const styles = StyleSheet.create({
@@ -22,26 +23,26 @@ export default function ThemeButton(props) {
             elevation: 1
         },
         listSelection: {
-            color: colorScheme !== 'light' ? DarkGrey : 'white',
-            backgroundColor: colorScheme !== 'light' ? DarkGrey : LightGrey,
+            color: theme !== 'light' ? DarkGrey : 'white',
+            backgroundColor: theme !== 'light' ? DarkGrey : LightGrey,
         },
         iconTextStyle: {
-            color: colorScheme !== 'light' ? 'white' : DarkGrey,
+            color: theme !== 'light' ? 'white' : DarkGrey,
             fontSize: 17,
             lineHeight: 20
         },
         iconStyle: {
-            color: colorScheme !== 'light' ? 'white' : DarkGrey,
+            color: theme !== 'light' ? 'white' : DarkGrey,
             padding: 5
         },
         selectedTextStyle: {
-            color: colorScheme !== 'light' ? LightGrey : DarkGrey,
+            color: theme !== 'light' ? LightGrey : DarkGrey,
             fontWeight: '400',
             paddingHorizontal: 5
         }
     });
 
-    const [colorScheme, setColorScheme] = useState(useColorScheme());
+    const {theme, toggleTheme} = useContext(ThemeContext);
     const themeData = [
         { label: 'Dark', value: 'dark', icon: 'circle' },
         { label: 'Light', value: 'light', icon: 'circle-o' }
@@ -59,26 +60,33 @@ export default function ThemeButton(props) {
                 iconStyle={styles.iconStyle}
                 itemTextStyle={styles.itemTextStyle}
                 itemContainerStyle={styles.iconStyle}
-                selectedStyle={styles.selectedStyle}
                 selectedTextStyle={styles.selectedTextStyle}
                 data={themeData}
                 search={false}
                 labelField="label"
                 valueField="value"
-                value={colorScheme}
-                onChange={item => { setColorScheme(item.value); }}
+                value={theme}
+                onChange={item => { toggleTheme(item.value); }}
                 renderItem={(item, selected) => 
                     <Icon {...props} name={item.icon} style={styles.iconStyle} size={20}>
                         <Text style={styles.iconTextStyle}>
-                            {` ${item.label}`}
+                            {` ${item.label} `}
+                            {selected && (
+                                <Icon
+                                    {...props}
+                                    name={'check'}
+                                    style={styles.iconStyle}
+                                    size={15}
+                                />
+                            )}
                         </Text>
                     </Icon> 
                 }
                 renderLeftIcon={() => 
                     <Icon {...props} 
                         name={
-                            isNullUndefinedOrEmpty(colorScheme) === false 
-                                ? (colorScheme === 'light' ? 'circle-o' : 'circle')
+                            isNullUndefinedOrEmpty(theme) === false 
+                                ? (theme === 'light' ? 'circle-o' : 'circle')
                                 : 'adjust'
                         } 
                         style={styles.iconStyle} 

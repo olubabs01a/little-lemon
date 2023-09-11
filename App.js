@@ -9,7 +9,7 @@ import SubscribeScreen from './components/SubscribeScreen';
 import MenuItems from './components/MenuItems';
 import FeedbackForm from './components/FeedbackForm';
 import LoginScreen from './components/LoginScreen';
-import { useCallback, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { DrawerContentScrollView, DrawerItem, DrawerItemList, createDrawerNavigator } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -18,6 +18,7 @@ import ProfileScreen from './components/ProfileScreen';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CustomDrawerSelection } from './components/types';
 import { isNullUndefinedOrEmpty } from './utils/String';
+import { ThemeProvider } from './context/ThemeContext';
 
 const appStyles = StyleSheet.create({
   body: {
@@ -277,12 +278,13 @@ export default function App() {
   )};
 
   return (
-    <><NavigationContainer>
+    <><ThemeProvider>
+      <NavigationContainer>
         <MenuDrawerScreen />
         <View style={appStyles.footer}>
           <LittleLemonFooter />
         </View>
       </NavigationContainer>
-    </>
+    </ThemeProvider></>
   );
 }
