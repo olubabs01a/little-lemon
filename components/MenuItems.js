@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, SectionList } from "react-native";
-import { DarkGrey, LemonYellow } from "../utils/Colors";
+import { DarkGreen, DarkGrey, LemonYellow } from "../utils/Colors";
 import { useContext } from "react";
 import ThemeContext from "../context/ThemeContext";
 
@@ -70,18 +70,18 @@ const menuStyles = StyleSheet.create({
 		paddingVertical: 10,
 		paddingHorizontal: 10,
 		fontWeight: "500",
-		backgroundColor: LemonYellow //Coral
+		backgroundColor: LemonYellow
 	},
 	sectionFooter: {
 		fontSize: 15,
 		paddingVertical: 10,
 		paddingHorizontal: 10,
 		textAlign: "center",
-		color: LemonYellow //Coral
+		color: LemonYellow
 	},
 	menuItem: {
 		fontSize: 16,
-		color: LemonYellow //Coral
+		color: LemonYellow
 	},
 	header: {
 		padding: 18,
@@ -150,8 +150,8 @@ export default function MenuItems() {
 								style={[
 									menuStyles.sectionFooter,
 									theme !== "light"
-										? { color: LemonYellow } //Coral }
-										: { color: DarkGrey }
+										? { color: LemonYellow }
+										: { color: DarkGreen }
 								]}>
 								{note}
 							</Text>

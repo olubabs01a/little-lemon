@@ -1,18 +1,13 @@
 {
   "expo": {
-    "name": "little-lemon",
+    "name": "Little Lemon",
     "slug": "little-lemon",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/little-lemon-logo-grey.png",
+    "icon": "./assets/little-lemon-logo.png",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/little-lemon-logo.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff",
-      "dark": {
-        "backgroundColor": "#333333"
-      }
+      "image": "./assets/android/res/mipmap-xxhdpi/ic_launcher_foreground.png"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -21,15 +16,28 @@
       "userInterfaceStyle": "automatic",
       "supportsTablet": true
     },
+    "developmentClient": {
+      "silentLaunch": true
+    },
     "android": {
       "userInterfaceStyle": "automatic",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/android/res/mipmap-hdpi/ic_launcher_foreground.png",
+        "backgroundImage": "./assets/android/res/mipmap-hdpi/ic_launcher_background.png",
+        "monochromeImage": "./assets/android/res/mipmap-hdpi/ic_launcher_monochrome.png"
+      },
+      "permissions": [],
+      "splash": {
+        "hdpi": "./assets/android/res/mipmap-hdpi/ic_launcher_foreground.png",
+        "xhdpi": "./assets/android/res/mipmap-xhdpi/ic_launcher_foreground.png",
+        "xxhdpi": "./assets/android/res/mipmap-xxhdpi/ic_launcher_foreground.png",
+        "xxxhdpi": "./assets/android/res/mipmap-xxxhdpi/ic_launcher_foreground.png"
       }
     },
     "web": {
-      "favicon": "./img/lemonLogo.png"
+      "favicon": "./assets/web/favicon.ico",
+      "description": "Little Lemon, your local Mediterranean Bistro",
+      "preferRelatedApplications": true
     },
     "plugins": [
       [
