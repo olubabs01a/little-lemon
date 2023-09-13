@@ -7,7 +7,7 @@
     "icon": "./assets/little-lemon-logo.png",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/android/res/mipmap-xxhdpi/ic_launcher_foreground.png"
+      "image": "./assets/android/res/mipmap-xxxhdpi/ic_launcher_foreground.png"
     },
     "assetBundlePatterns": [
       "**/*"

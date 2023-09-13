@@ -101,7 +101,10 @@ export default function FeedbackForm(props) {
 							[
 								{ text: "No", onPress: () => navigator.navigate("Welcome") },
 								{ text: "Yes" }
-							]
+							],
+							{
+								cancelable: true
+							}
 						);
 					}
 				}

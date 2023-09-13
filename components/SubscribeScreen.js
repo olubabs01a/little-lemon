@@ -13,8 +13,7 @@ const styles = StyleSheet.create({
 	},
 	logo: {
 		height: 150,
-		width: 150,
-		resizeMode: "contain"
+		width: 150
 	},
 	body: {
 		margin: 10,
@@ -117,7 +116,7 @@ export default function SubscribeScreen(props) {
 					resizeMode='contain'
 					style={styles.logo}
 					accessible={true}
-					accessibilityLabel={"Little Lemon logo"}
+					aria-label={"Little Lemon logo"}
 					source={require("../assets/little-lemon-logo-grey.png")}
 				/>
 				<Text

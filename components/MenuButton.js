@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Pressable, StyleSheet, Text } from "react-native";
+import { Pressable, StyleSheet, Text, Platform } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -17,13 +17,13 @@ export default function MenuButton(props) {
 
 	return (
 		<Pressable
-			accessibilityLabel={"Menu Items"}
+			aria-label={"Menu Items"}
 			onPress={() => {
 				navigator.getId() !== "RightDrawer"
 					? navigator.getParent("RightDrawer").openDrawer()
 					: navigator.navigate("MenuItems");
 			}}>
-			<Icon style={{ ...styles.loggedIn, color: props.tintColor }} name={"cutlery"}>
+			<Icon adjustsFontSizeToFit style={{ ...styles.loggedIn, color: props.tintColor }} name={"cutlery"}>
 				<Text>{" Menu"}</Text>
 			</Icon>
 		</Pressable>

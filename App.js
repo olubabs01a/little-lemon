@@ -49,7 +49,7 @@ const appStyles = StyleSheet.create({
 		verticalAlign: "middle",
 		left: 18,
 		bottom: 25,
-    zIndex: 1
+		zIndex: 1
 	},
 	logOutLink: {
 		fontSize: 16,

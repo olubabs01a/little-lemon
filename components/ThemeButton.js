@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Platform } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { isNullUndefinedOrEmpty } from "../utils/String";
@@ -18,7 +18,7 @@ export default function ThemeButton(props) {
 		},
 		themeSelection: {
 			margin: 20,
-			minWidth: 100,
+			minWidth: Platform.OS === "web" ? 110 : 100,
 			maxHeight: 100,
 			borderBottomColor: theme !== "light" ? LightGrey : DarkGrey,
 			borderBottomWidth: 0.5,
@@ -48,9 +48,9 @@ export default function ThemeButton(props) {
 	];
 
 	return (
-		<View style={styles.container} accessibilityLabel={"Theme"}>
+		<View style={styles.container} aria-label={"Theme"}>
 			<Dropdown
-				accessibilityLabel={"Theme Selection"}
+				aria-label={"Theme Selection"}
 				style={styles.themeSelection}
 				containerStyle={styles.listSelection}
 				activeColor={LemonYellow}
@@ -70,7 +70,7 @@ export default function ThemeButton(props) {
 					<Icon
 						{...props}
 						name={item.icon}
-						accessibilityLabel={item.label}
+						aria-label={item.label}
 						style={[
 							styles.iconStyle,
 							selected && { color: DarkGrey },

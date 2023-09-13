@@ -1,52 +1,55 @@
-import { View, Text, StyleSheet, SectionList } from "react-native";
-import { DarkGreen, DarkGrey, LemonYellow } from "../utils/Colors";
-import { useContext } from "react";
+import { Alert, View, Text, StyleSheet, SectionList } from "react-native";
+import { DarkGreen, DarkGrey, LemonYellow, LightGrey } from "../utils/Colors";
+import { useEffect, useContext, useState } from "react";
 import ThemeContext from "../context/ThemeContext";
+import { getMenu } from "../api/Actions";
+import { ActivityIndicator } from "react-native-paper";
+import { FlatList } from "react-native-gesture-handler";
 
-const menuItemsToDisplay = [
-	{
-		title: "Appetizers",
-		data: [
-			{ name: "Hummus", price: "$5.00", id: "1A" },
-			{ name: "Moutabal", price: "$5.00", id: "2B" },
-			{ name: "Falafel", price: "$7.50", id: "3C" },
-			{ name: "Marinated Olives", price: "$5.00", id: "4D" },
-			{ name: "Kofta", price: "$5.00", id: "5E" },
-			{ name: "Eggplant Salad", price: "$8.50", id: "6F" }
-		]
-	},
-	{
-		title: "Main Dishes",
-		data: [
-			{ name: "Lentil Burger", price: "$10.00", id: "7G" },
-			{ name: "Smoked Salmon", price: "$14.00", id: "8H" },
-			{ name: "Kofta Burger", price: "$11.00", id: "9I" },
-			{ name: "Turkish Kebab", price: "$15.50", id: "10J" }
-		],
-		note: "Each comes with 1st side on the house"
-	},
-	{
-		title: "Sides",
-		data: [
-			{ name: "Fries", price: "$3.00", id: "11K" },
-			{ name: "Buttered Rice", price: "$3.00", id: "12L" },
-			{ name: "Bread Sticks", price: "$3.00", id: "13M" },
-			{ name: "Pita Pocket", price: "$3.00", id: "14N" },
-			{ name: "Lentil Soup", price: "$3.75", id: "15O" },
-			{ name: "Greek Salad", price: "$6.00", id: "16Q" },
-			{ name: "Rice Pilaf", price: "$4.00", id: "17R" }
-		]
-	},
-	{
-		title: "Desserts",
-		data: [
-			{ name: "Baklava", price: "$3.00", id: "18S" },
-			{ name: "Tartufo", price: "$3.00", id: "19T" },
-			{ name: "Tiramisu", price: "$5.00", id: "20U" },
-			{ name: "Panna Cotta", price: "$5.00", id: "21V" }
-		]
-	}
-];
+// const menuItemsToDisplay = [
+// 	{
+// 		title: "Appetizers",
+// 		data: [
+// 			{ name: "Hummus", price: "$5.00", id: "1A" },
+// 			{ name: "Moutabal", price: "$5.00", id: "2B" },
+// 			{ name: "Falafel", price: "$7.50", id: "3C" },
+// 			{ name: "Marinated Olives", price: "$5.00", id: "4D" },
+// 			{ name: "Kofta", price: "$5.00", id: "5E" },
+// 			{ name: "Eggplant Salad", price: "$8.50", id: "6F" }
+// 		]
+// 	},
+// 	{
+// 		title: "Main Dishes",
+// 		data: [
+// 			{ name: "Lentil Burger", price: "$10.00", id: "7G" },
+// 			{ name: "Smoked Salmon", price: "$14.00", id: "8H" },
+// 			{ name: "Kofta Burger", price: "$11.00", id: "9I" },
+// 			{ name: "Turkish Kebab", price: "$15.50", id: "10J" }
+// 		],
+// 		note: "Each comes with 1st side on the house"
+// 	},
+// 	{
+// 		title: "Sides",
+// 		data: [
+// 			{ name: "Fries", price: "$3.00", id: "11K" },
+// 			{ name: "Buttered Rice", price: "$3.00", id: "12L" },
+// 			{ name: "Bread Sticks", price: "$3.00", id: "13M" },
+// 			{ name: "Pita Pocket", price: "$3.00", id: "14N" },
+// 			{ name: "Lentil Soup", price: "$3.75", id: "15O" },
+// 			{ name: "Greek Salad", price: "$6.00", id: "16Q" },
+// 			{ name: "Rice Pilaf", price: "$4.00", id: "17R" }
+// 		]
+// 	},
+// 	{
+// 		title: "Desserts",
+// 		data: [
+// 			{ name: "Baklava", price: "$3.00", id: "18S" },
+// 			{ name: "Tartufo", price: "$3.00", id: "19T" },
+// 			{ name: "Tiramisu", price: "$5.00", id: "20U" },
+// 			{ name: "Panna Cotta", price: "$5.00", id: "21V" }
+// 		]
+// 	}
+// ];
 
 const menuStyles = StyleSheet.create({
 	container: {
@@ -124,7 +127,30 @@ function Separator() {
 }
 
 export default function MenuItems() {
+	const [menuItems, setMenuItems] = useState([]);
+	const [isLoading, setLoading] = useState(true);
 	const { theme } = useContext(ThemeContext);
+
+	useEffect(() => {
+		async function getItems() {
+			try {
+				const response = await (await getMenu()).json();
+				// setTimeout(() => {
+				// 	setMenuItems(response.menu);
+				// }, 10000);
+				setMenuItems(response.menu);
+			} catch (error) {
+				console.error(error);
+				Alert.alert("An error occured", error.message, undefined, {
+					cancelable: true
+				});
+			} finally {
+				setLoading(false);
+			}
+		}
+
+		getItems();
+	}, []);
 
 	//TODO: Add scroll to each section via Dropdown menu footer component
 	return (
@@ -133,7 +159,47 @@ export default function MenuItems() {
 				menuStyles.container,
 				theme !== "light" ? { backgroundColor: DarkGrey } : { backgroundColor: "white" }
 			]}>
-			<SectionList
+			{isLoading ? (
+				<ActivityIndicator
+					animating={isLoading}
+					style={menuStyles.spinner}
+					color={theme !== "light" ? LightGrey : DarkGrey}
+				/>
+			) : menuItems?.length > 0 ? (
+				<FlatList
+					data={menuItems}
+					scrollEnabled
+					nestedScrollEnabled
+					ListHeaderComponent={Header}
+					ItemSeparatorComponent={Separator}
+					renderItem={({ item }) => (
+						<View style={menuStyles.innerContainer}>
+							<Text
+								style={[
+									menuStyles.menuItem,
+									theme !== "light" ? { color: "white" } : { color: DarkGrey }
+								]}>
+								{item.title}
+							</Text>
+							<Text
+								style={[
+									menuStyles.menuItem,
+									theme !== "light" ? { color: "white" } : { color: DarkGrey }
+								]}>
+								{`$${item.price}`}
+							</Text>
+						</View>
+					)}
+					contentContainerStyle={menuStyles.listStyle}
+					stickySectionHeadersEnabled={true}
+					showsVerticalScrollIndicator={true}
+					indicatorStyle={theme !== "light" ? "white" : "black"}
+					keyExtractor={({ id }) => id}
+				/>
+			) : (
+				<Text style={menuStyles.listStyle}>No Items Found.</Text>
+			)}
+			{/* <SectionList
 				sections={menuItemsToDisplay}
 				nestedScrollEnabled={true}
 				ListHeaderComponent={Header}
@@ -181,7 +247,7 @@ export default function MenuItems() {
 				showsVerticalScrollIndicator={true}
 				indicatorStyle={theme !== "light" ? "white" : "black"}
 				keyExtractor={(item, index) => item + index}
-			/>
+			/> */}
 		</View>
 	);
 }
