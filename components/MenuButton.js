@@ -23,7 +23,7 @@ export default function MenuButton(props) {
 					? navigator.getParent("RightDrawer").openDrawer()
 					: navigator.navigate("MenuItems");
 			}}>
-			<Icon adjustsFontSizeToFit style={{ ...styles.loggedIn, color: props.tintColor }} name={"cutlery"}>
+			<Icon style={{ ...styles.loggedIn, color: props.tintColor }} name={"cutlery"}>
 				<Text>{" Menu"}</Text>
 			</Icon>
 		</Pressable>

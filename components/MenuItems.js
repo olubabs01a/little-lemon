@@ -197,7 +197,18 @@ export default function MenuItems() {
 					keyExtractor={({ id }) => id}
 				/>
 			) : (
-				<Text style={menuStyles.listStyle}>No Items Found.</Text>
+				<>
+					<Header />
+					<Text
+						style={[
+							menuStyles.menuItem,
+							theme !== "light"
+								? { textAlign: "center", color: "white" }
+								: { textAlign: "center", color: DarkGrey }
+						]}>
+						No Items Found
+					</Text>
+				</>
 			)}
 			{/* <SectionList
 				sections={menuItemsToDisplay}
