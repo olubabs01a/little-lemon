@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Pressable, StyleSheet, Text } from "react-native";
+import { Pressable, StyleSheet, Text, Platform } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -20,7 +20,7 @@ export default function LogInOutButton(props) {
 
 	return (
 		<Pressable
-			accessibilityLabel={renderText()}
+			aria-label={renderText()}
 			onPress={() => {
 				props.isLoggedIn ? props.setLoggedIn(false) : navigator.navigate("Login");
 			}}>

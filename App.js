@@ -143,7 +143,7 @@ export default function App() {
 					resizeMode='center'
 					style={appStyles.drawerIcon}
 					accessible={true}
-					accessibilityLabel={"Little Lemon logo"}
+					aria-label={"Little Lemon logo"}
 					source={require("./img/littleLemonLogo.png")}
 				/>
 				<DrawerContentScrollView
@@ -159,7 +159,7 @@ export default function App() {
 						{isLoggedIn ? (
 							<DrawerItem
 								name={CustomDrawerSelection.Profile}
-								accessibilityLabel={"View Profile"}
+								aria-label={"View Profile"}
 								label={"View Profile"}
 								/** Workaround to simulate active appearance on route change */
 								inactiveBackgroundColor={renderActiveBackground(
@@ -188,7 +188,7 @@ export default function App() {
 						) : (
 							<DrawerItem
 								name={CustomDrawerSelection.Login}
-								accessibilityLabel={"Login"}
+								aria-label={"Login"}
 								label={"Login"}
 								allowFontScaling={true}
 								/** Workaround to simulate active appearance on route change */
@@ -218,7 +218,7 @@ export default function App() {
 
 						<DrawerItem
 							name={CustomDrawerSelection.Subscribe}
-							accessibilityLabel={"Subscribe to our Newsletter"}
+							aria-label={"Subscribe to our Newsletter"}
 							label={"Newsletter"}
 							allowFontScaling={true}
 							/** Workaround to simulate active appearance on route change */
@@ -249,7 +249,7 @@ export default function App() {
 					<View style={{ marginTop: Platform.OS === "ios" ? -25 : -5 }}>
 						{isLoggedIn && (
 							<Pressable
-								accessibilityLabel={"Log out"}
+								aria-label={"Log out"}
 								style={{ ...appStyles.button, ...appStyles.logOutWrapper }}
 								onPress={() => {
 									setLoggedIn(false);
@@ -267,6 +267,12 @@ export default function App() {
 							</Pressable>
 						)}
 						<ThemeButton />
+
+						{Platform.OS === "web" && (
+							<View style={[appStyles.footer, { flex: 1 }]}>
+								<LittleLemonFooter />
+							</View>
+						)}
 					</View>
 				</DrawerContentScrollView>
 			</SafeAreaView>
@@ -399,9 +405,11 @@ export default function App() {
 			<ThemeProvider>
 				<NavigationContainer>
 					<MenuDrawerScreen />
-					<View style={appStyles.footer}>
-						<LittleLemonFooter />
-					</View>
+					{Platform.OS !== "web" && (
+						<View style={appStyles.footer}>
+							<LittleLemonFooter />
+						</View>
+					)}
 				</NavigationContainer>
 			</ThemeProvider>
 		</>

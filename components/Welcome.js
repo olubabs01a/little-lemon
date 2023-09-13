@@ -28,7 +28,7 @@ const Welcome = (props) => {
 				resizeMode='contain'
 				style={styles.logo}
 				accessible={true}
-				accessibilityLabel={"Little Lemon logo"}
+				aria-label={"Little Lemon logo"}
 				source={require("../assets/little-lemon-logo.png")}
 			/>
 			<Text
@@ -57,8 +57,7 @@ const styles = StyleSheet.create({
 	},
 	logo: {
 		height: 250,
-		width: 250,
-		resizeMode: "contain"
+		width: 250
 	},
 	subscribeButton: {
 		backgroundColor: LemonYellow,

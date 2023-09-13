@@ -80,7 +80,7 @@ export default function WelcomeScreen(props) {
 				<View style={styles.headerWrapper}>
 					<Image
 						accessible={true}
-						accessibilityLabel='Little Lemon Logo'
+						aria-label='Little Lemon Logo'
 						resizeMode='cover'
 						style={styles.logo}
 						source={require("../img/lemonLogo.png")}
@@ -107,28 +107,28 @@ export default function WelcomeScreen(props) {
 					source={require("../img/Picture1.png")}
 					resizeMode='cover'
 					accessible={true}
-					accessibilityLabel={"Food Picture 1"}
+					aria-label={"Food Picture 1"}
 				/>
 				<Image
 					style={styles.image}
 					source={require("../img/Picture2.png")}
 					resizeMode='cover'
 					accessible={true}
-					accessibilityLabel={"Food Picture 2"}
+					aria-label={"Food Picture 2"}
 				/>
 				<Image
 					style={styles.image}
 					source={require("../img/Picture3.png")}
 					resizeMode='cover'
 					accessible={true}
-					accessibilityLabel={"Food Picture 3"}
+					aria-label={"Food Picture 3"}
 				/>
 				<Image
 					style={styles.image}
 					source={require("../img/Picture4.png")}
 					resizeMode='cover'
 					accessible={true}
-					accessibilityLabel={"Food Picture 4"}
+					aria-label={"Food Picture 4"}
 				/>
 				<Pressable
 					style={{ ...styles.button, ...styles.submitButton }}
