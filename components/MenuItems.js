@@ -64,6 +64,9 @@ const menuStyles = StyleSheet.create({
 		flexWrap: "wrap",
 		justifyContent: "space-between"
 	},
+	spinner: {
+		flex: 1
+	},
 	listStyle: {
 		margin: 10,
 		textAlign: "center"
@@ -133,20 +136,17 @@ export default function MenuItems() {
 
 	useEffect(() => {
 		async function getItems() {
-			try {
-				const response = await (await getMenu()).json();
-				// setTimeout(() => {
-				// 	setMenuItems(response.menu);
-				// }, 10000);
-				setMenuItems(response.menu);
-			} catch (error) {
-				console.error(error);
-				Alert.alert("An error occured", error.message, undefined, {
-					cancelable: true
+			await getMenu()
+				.then(response => {
+					setMenuItems(response.menu);
+					setLoading(false);
+				})
+				.catch((error) => {
+					console.error(error);
+					Alert.alert("An error occured", error.message, undefined, {
+						cancelable: true
+					});
 				});
-			} finally {
-				setLoading(false);
-			}
 		}
 
 		getItems();
@@ -161,6 +161,7 @@ export default function MenuItems() {
 			]}>
 			{isLoading ? (
 				<ActivityIndicator
+					size={"large"}
 					animating={isLoading}
 					style={menuStyles.spinner}
 					color={theme !== "light" ? LightGrey : DarkGrey}
@@ -194,7 +195,7 @@ export default function MenuItems() {
 					stickySectionHeadersEnabled={true}
 					showsVerticalScrollIndicator={true}
 					indicatorStyle={theme !== "light" ? "white" : "black"}
-					keyExtractor={({ id }) => id}
+					keyExtractor={(item, index) => item + index}
 				/>
 			) : (
 				<>

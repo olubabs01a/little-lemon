@@ -8,7 +8,7 @@ import { Coral } from "../utils/Colors";
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: Coral //LemonYellow
+		backgroundColor: Coral
 	},
 	body: {
 		paddingTop: 30,
