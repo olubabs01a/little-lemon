@@ -1,55 +1,12 @@
-import { Alert, View, Text, StyleSheet, SectionList } from "react-native";
-import { DarkGreen, DarkGrey, LemonYellow, LightGrey } from "../utils/Colors";
+import { Alert, View, Text, StyleSheet } from "react-native";
+import { DarkGrey, LemonYellow, LightGrey } from "../utils/Colors";
 import { useEffect, useContext, useState } from "react";
 import ThemeContext from "../context/ThemeContext";
 import { getMenu } from "../api/Actions";
 import { ActivityIndicator } from "react-native-paper";
 import { FlatList } from "react-native-gesture-handler";
-
-// const menuItemsToDisplay = [
-// 	{
-// 		title: "Appetizers",
-// 		data: [
-// 			{ name: "Hummus", price: "$5.00", id: "1A" },
-// 			{ name: "Moutabal", price: "$5.00", id: "2B" },
-// 			{ name: "Falafel", price: "$7.50", id: "3C" },
-// 			{ name: "Marinated Olives", price: "$5.00", id: "4D" },
-// 			{ name: "Kofta", price: "$5.00", id: "5E" },
-// 			{ name: "Eggplant Salad", price: "$8.50", id: "6F" }
-// 		]
-// 	},
-// 	{
-// 		title: "Main Dishes",
-// 		data: [
-// 			{ name: "Lentil Burger", price: "$10.00", id: "7G" },
-// 			{ name: "Smoked Salmon", price: "$14.00", id: "8H" },
-// 			{ name: "Kofta Burger", price: "$11.00", id: "9I" },
-// 			{ name: "Turkish Kebab", price: "$15.50", id: "10J" }
-// 		],
-// 		note: "Each comes with 1st side on the house"
-// 	},
-// 	{
-// 		title: "Sides",
-// 		data: [
-// 			{ name: "Fries", price: "$3.00", id: "11K" },
-// 			{ name: "Buttered Rice", price: "$3.00", id: "12L" },
-// 			{ name: "Bread Sticks", price: "$3.00", id: "13M" },
-// 			{ name: "Pita Pocket", price: "$3.00", id: "14N" },
-// 			{ name: "Lentil Soup", price: "$3.75", id: "15O" },
-// 			{ name: "Greek Salad", price: "$6.00", id: "16Q" },
-// 			{ name: "Rice Pilaf", price: "$4.00", id: "17R" }
-// 		]
-// 	},
-// 	{
-// 		title: "Desserts",
-// 		data: [
-// 			{ name: "Baklava", price: "$3.00", id: "18S" },
-// 			{ name: "Tartufo", price: "$3.00", id: "19T" },
-// 			{ name: "Tiramisu", price: "$5.00", id: "20U" },
-// 			{ name: "Panna Cotta", price: "$5.00", id: "21V" }
-// 		]
-// 	}
-// ];
+import Header from "./shared/Header";
+import Separator from "./shared/Separator";
 
 const menuStyles = StyleSheet.create({
 	container: {
@@ -88,46 +45,8 @@ const menuStyles = StyleSheet.create({
 	menuItem: {
 		fontSize: 16,
 		color: LemonYellow
-	},
-	header: {
-		padding: 18,
-		fontSize: 23,
-		textAlign: "center",
-		color: "white"
-	},
-	separator: {
-		backgroundColor: "white",
-		height: 0.5,
-		opacity: 0.5
 	}
 });
-
-function Header() {
-	const { theme } = useContext(ThemeContext);
-
-	return (
-		<Text
-			style={[
-				menuStyles.header,
-				theme !== "light" ? { color: "white", opacity: 1 } : { color: DarkGrey }
-			]}>
-			Menu Items
-		</Text>
-	);
-}
-
-function Separator() {
-	const { theme } = useContext(ThemeContext);
-
-	return (
-		<View
-			style={[
-				menuStyles.separator,
-				theme !== "light" ? { backgroundColor: "white" } : { backgroundColor: DarkGrey }
-			]}
-		/>
-	);
-}
 
 export default function MenuItems() {
 	const [menuItems, setMenuItems] = useState([]);
@@ -171,7 +90,7 @@ export default function MenuItems() {
 					data={menuItems}
 					scrollEnabled
 					nestedScrollEnabled
-					ListHeaderComponent={Header}
+					ListHeaderComponent={() => <Header text={"Menu Items"} />}
 					ItemSeparatorComponent={Separator}
 					renderItem={({ item }) => (
 						<View style={menuStyles.innerContainer}>
@@ -199,7 +118,7 @@ export default function MenuItems() {
 				/>
 			) : (
 				<>
-					<Header />
+					<Header text={"Menu Items"} />
 					<Text
 						style={[
 							menuStyles.menuItem,
@@ -211,55 +130,6 @@ export default function MenuItems() {
 					</Text>
 				</>
 			)}
-			{/* <SectionList
-				sections={menuItemsToDisplay}
-				nestedScrollEnabled={true}
-				ListHeaderComponent={Header}
-				ItemSeparatorComponent={Separator}
-				renderSectionHeader={({ section: { title } }) => (
-					<View>
-						<Text style={menuStyles.sectionHeader}>{title}</Text>
-					</View>
-				)}
-				renderSectionFooter={({ section: { note } }) =>
-					note && (
-						<View>
-							<Text
-								style={[
-									menuStyles.sectionFooter,
-									theme !== "light"
-										? { color: LemonYellow }
-										: { color: DarkGreen }
-								]}>
-								{note}
-							</Text>
-						</View>
-					)
-				}
-				renderItem={({ item }) => (
-					<View style={menuStyles.innerContainer}>
-						<Text
-							style={[
-								menuStyles.menuItem,
-								theme !== "light" ? { color: "white" } : { color: DarkGrey }
-							]}>
-							{item.name}
-						</Text>
-						<Text
-							style={[
-								menuStyles.menuItem,
-								theme !== "light" ? { color: "white" } : { color: DarkGrey }
-							]}>
-							{item.price}
-						</Text>
-					</View>
-				)}
-				contentContainerStyle={menuStyles.listStyle}
-				stickySectionHeadersEnabled={true}
-				showsVerticalScrollIndicator={true}
-				indicatorStyle={theme !== "light" ? "white" : "black"}
-				keyExtractor={(item, index) => item + index}
-			/> */}
 		</View>
 	);
 }

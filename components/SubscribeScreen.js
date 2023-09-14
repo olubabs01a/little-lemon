@@ -105,7 +105,8 @@ export default function SubscribeScreen(props) {
 						? { backgroundColor: DarkGrey, color: "white" }
 						: { backgroundColor: "white", color: DarkGrey }
 				]}
-				indicatorStyle={theme !== "light" ? "white" : "black"}				contentContainerStyle={{
+				indicatorStyle={theme !== "light" ? "white" : "black"}
+				contentContainerStyle={{
 					flex: 1,
 					alignItems: "center",
 					justifyContent: "flex-start"

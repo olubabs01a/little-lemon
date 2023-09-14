@@ -24,6 +24,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { CustomDrawerSelection } from "./components/types";
 import { isNullUndefinedOrEmpty } from "./utils/String";
 import ThemeContext, { ThemeProvider } from "./context/ThemeContext";
+import UserPreferences from "./components/UserPreferences";
 
 //TODO: Create StyleContext to hold all styles, and effect theme changes
 const appStyles = StyleSheet.create({
@@ -157,39 +158,77 @@ export default function App() {
 					<View
 						style={Platform.OS === "ios" ? { marginTop: -20, paddingBottom: 15 } : {}}>
 						{isLoggedIn ? (
-							<DrawerItem
-								name={CustomDrawerSelection.Profile}
-								aria-label={"View Profile"}
-								label={"View Profile"}
-								/** Workaround to simulate active appearance on route change */
-								inactiveBackgroundColor={renderActiveBackground(
-									CustomDrawerSelection.Profile
-								)}
-								inactiveTintColor={renderActiveTint(CustomDrawerSelection.Profile)}
-								allowFontScaling={true}
-								icon={(props) => (
-									<Icon
-										{...{
-											...props,
-											color: renderActiveTint(CustomDrawerSelection.Profile)
-										}}
-										name='user-circle'
-									/>
-								)}
-								labelStyle={{
-									color: renderActiveTint(CustomDrawerSelection.Profile),
-									paddingLeft: 0
-								}}
-								style={appStyles.logOutDrawerItem}
-								onPress={() => {
-									navigator.navigate(CustomDrawerSelection.Profile);
-								}}
-							/>
+							<>
+								<DrawerItem
+									name={CustomDrawerSelection.Profile}
+									aria-label={"View Profile"}
+									label={"View Profile"}
+									/** Workaround to simulate active appearance on route change */
+									inactiveBackgroundColor={renderActiveBackground(
+										CustomDrawerSelection.Profile
+									)}
+									inactiveTintColor={renderActiveTint(
+										CustomDrawerSelection.Profile
+									)}
+									allowFontScaling={true}
+									icon={(props) => (
+										<Icon
+											{...{
+												...props,
+												color: renderActiveTint(
+													CustomDrawerSelection.Profile
+												)
+											}}
+											name='user-circle'
+										/>
+									)}
+									labelStyle={{
+										color: renderActiveTint(CustomDrawerSelection.Profile),
+										paddingLeft: 0
+									}}
+									style={appStyles.logOutDrawerItem}
+									onPress={() => {
+										navigator.navigate(CustomDrawerSelection.Profile);
+									}}
+								/>
+								<DrawerItem
+									name={CustomDrawerSelection.Preferences}
+									aria-label={"Account Preferences"}
+									label={"Account Preferences"}
+									allowFontScaling={true}
+									/** Workaround to simulate active appearance on route change */
+									inactiveBackgroundColor={renderActiveBackground(
+										CustomDrawerSelection.Preferences
+									)}
+									inactiveTintColor={renderActiveTint(
+										CustomDrawerSelection.Preferences
+									)}
+									icon={(props) => (
+										<Icon
+											{...{
+												...props,
+												color: renderActiveTint(
+													CustomDrawerSelection.Preferences
+												)
+											}}
+											name='wrench'
+										/>
+									)}
+									labelStyle={{
+										color: renderActiveTint(CustomDrawerSelection.Preferences),
+										paddingLeft: 1
+									}}
+									style={appStyles.logOutDrawerItem}
+									onPress={() => {
+										navigator.navigate(CustomDrawerSelection.Preferences);
+									}}
+								/>
+							</>
 						) : (
 							<DrawerItem
 								name={CustomDrawerSelection.Login}
-								aria-label={"Login"}
-								label={"Login"}
+								aria-label={CustomDrawerSelection.Login}
+								label={CustomDrawerSelection.Login}
 								allowFontScaling={true}
 								/** Workaround to simulate active appearance on route change */
 								inactiveBackgroundColor={renderActiveBackground(
@@ -312,7 +351,7 @@ export default function App() {
 							unmountOnBlur: true,
 							/** hide menu button on Login screen */
 							headerRight: () => {},
-							/** hide this login button in drawer */
+							/** hide this login button in top half of drawer */
 							drawerItemStyle: { display: "none" }
 						}}>
 						{(props) => (
@@ -335,11 +374,34 @@ export default function App() {
 									setLoggedIn={setLoggedIn}
 								/>
 							),
-							/** hide this profile button in drawer */
+							/** hide this profile button in top half of drawer */
 							drawerItemStyle: { display: "none" }
 						}}>
 						{(props) => (
 							<ProfileScreen
+								{...props}
+								isLoggedIn={isLoggedIn}
+								setLoggedIn={setLoggedIn}
+								setCustomDrawerSelection={setCustomDrawerSelection}
+							/>
+						)}
+					</LeftDrawer.Screen>
+					<LeftDrawer.Screen
+						name='Preferences'
+						options={{
+							unmountOnBlur: true,
+							headerRight: (props) => (
+								<LogInOutButton
+									{...props}
+									isLoggedIn={isLoggedIn}
+									setLoggedIn={setLoggedIn}
+								/>
+							),
+							/** hide this preferences button in top half of drawer */
+							drawerItemStyle: { display: "none" }
+						}}>
+						{(props) => (
+							<UserPreferences
 								{...props}
 								isLoggedIn={isLoggedIn}
 								setLoggedIn={setLoggedIn}
@@ -365,9 +427,19 @@ export default function App() {
 						)}
 					</LeftDrawer.Screen>
 
-					{/* <LeftDrawer.Screen name='Home' options={{ title: 'Home', drawerIcon: (props) => <Icon {...props} name='home' /> }}>
-          {(props) => <WelcomeScreen {...props} setCustomDrawerSelection={setCustomDrawerSelection} />}
-        </LeftDrawer.Screen> */}
+					{/* <LeftDrawer.Screen
+						name='Home'
+						options={{
+							title: "Home",
+							drawerIcon: (props) => <Icon {...props} name='home' />
+						}}>
+						{(props) => (
+							<WelcomeScreen
+								{...props}
+								setCustomDrawerSelection={setCustomDrawerSelection}
+							/>
+						)}
+					</LeftDrawer.Screen> */}
 					<LeftDrawer.Screen
 						name='Welcome'
 						options={{
