@@ -1,28 +1,28 @@
-import { View, Text, StyleSheet } from "react-native";
-import { DarkGrey, LemonYellow } from "../utils/Colors";
+import { View, Switch, Text, StyleSheet } from "react-native";
+import { DarkGreen, DarkGrey, DeepRed, LemonYellow } from "../utils/Colors";
 import { useEffect, useContext, useState, useCallback } from "react";
-import PreferencesContext, { PreferencesProvider } from "../context/PreferencesContext";
-import { ToggleButton } from "react-native-paper";
+import PreferencesContext from "../context/PreferencesContext";
 import ThemeContext from "../context/ThemeContext";
 import Header from "./shared/Header";
 import { CustomDrawerSelection } from "./types";
 
 const styles = StyleSheet.create({
 	container: {
-		// flex: 1,
+		flex: 1,
 		backgroundColor: "black",
 		paddingHorizontal: 20,
 		paddingVertical: 40
 	},
 	innerContainer: {
 		paddingHorizontal: 10,
-		paddingVertical: 15,
-		flexDirection: "row",
+		paddingVertical: 10,
+        flexDirection: "row",
 		flexWrap: "wrap",
 		justifyContent: "space-between"
 	},
 	preferenceItem: {
 		fontSize: 16,
+        textAlignVertical: 'center',
 		color: LemonYellow
 	}
 });
@@ -35,65 +35,71 @@ export default function UserPreferences(props) {
 		props.setCustomDrawerSelection(CustomDrawerSelection.Preferences);
 	}, []);
 
+    const onUpdateUserPreferences = useCallback((updatedPref, index) => {
+        let userPrefs = preferences;
+        userPrefs[index] = updatedPref;
+
+        updatePreferences(userPrefs);
+    }, [preferences]);
+
 	function PreferenceItem(props) {
 		const [isEnabled, setEnabled] = useState(props.isEnabled);
 
 		const onButtonToggle = useCallback(
 			(val) => {
-				const newIsEnabled = isEnabled ? false : true;
-
-				setEnabled(newIsEnabled);
-				updateUserPreferences(val, newIsEnabled);
+				setEnabled(val);
+				props.onUpdateUserPreferences([props.name, { title: props.title, isEnabled: val }], props.index);
 			},
-			[preferences]
+			[props, preferences]
 		);
-
-		const updateUserPreferences = (key, updated) => {
-			let userPrefs = preferences.filter((item) => item[0] !== key);
-			userPrefs.push([key, { title: props.title, isEnabled: updated }]);
-			updatePreferences(userPrefs);
-		};
 
 		return (
 			<View style={styles.innerContainer}>
 				<Text
+                    aria-label={props.title}
 					style={[
 						styles.preferenceItem,
 						theme !== "light" ? { color: "white" } : { color: DarkGrey }
 					]}>
 					{props.title}
 				</Text>
-				<ToggleButton
-					accessibilityLabel={props.title}
-					value={props.key}
-					status={isEnabled}
-					rippleColor={"blue"}
+				<Switch
+					aria-label={props.title}
+					value={isEnabled}
+					trackColor={{
+						true: DarkGreen,
+						false: DeepRed
+					}}
+					ios_backgroundColor={DeepRed}
 					style={[
 						styles.preferenceItem,
 						theme !== "light" ? { color: "white" } : { color: DarkGrey }
 					]}
-					onPress={onButtonToggle}
+					onValueChange={onButtonToggle}
 				/>
 			</View>
 		);
 	}
 
 	return (
-		<PreferencesProvider>
-			<View
-				style={[
-					styles.container,
-					theme !== "light" ? { backgroundColor: DarkGrey } : { backgroundColor: "white" }
-				]}>
-				<Header text={"Account Preferences"} />
-				{preferences?.map((setting) => {
+		<View
+			style={[
+				styles.container,
+				theme !== "light" ? { backgroundColor: DarkGrey } : { backgroundColor: "white" }
+			]}>
+			<Header text={"Account Preferences"} />
+			<View style={{ paddingTop: 15 }}>
+				{preferences.map((setting, index) => (
 					<PreferenceItem
-						key={setting[0]}
+                        name={setting[0]}
+						key={setting + index}
+                        index={index}
 						title={setting[1].title}
 						isEnabled={setting[1].isEnabled}
-					/>;
-				})}
+                        onUpdateUserPreferences={onUpdateUserPreferences}
+					/>
+				))}
 			</View>
-		</PreferencesProvider>
+		</View>
 	);
 }

@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
 
-const PreferencesContext = createContext([]);
+const PreferencesContext = createContext();
 const preferencesKeys = ["pushNotifications", "emailMarketing", "latestNews"];
 
 export const PreferencesProvider = ({ children }) => {
@@ -12,7 +12,7 @@ export const PreferencesProvider = ({ children }) => {
 		["latestNews", { title: "Latest News", isEnabled: false }]
 	];
 
-	const [preferences, setPreferences] = useState(undefined);
+	const [preferences, setPreferences] = useState([]);
 
 	const mapPreferences = (savedPreferences) => {
 		let mappedPrefs = savedPreferences;
@@ -50,23 +50,28 @@ export const PreferencesProvider = ({ children }) => {
 	}, []);
 
 	const updatePreferences = (updatedPreferences) => {
-		try {
-			setPreferences(updatedPreferences);
-			let prefsToSave = updatePreferences;
+		const setPreferences = async (updatedPreferences) => {
+			try {
+				setPreferences(updatedPreferences);
+				let prefsToSave = updatedPreferences;
 
-			updatedPreferences.map((item, index) => {
-				prefsToSave[index][1] = JSON.stringify(item[1]);
-			});
+				updatedPreferences.map((item, index) => {
+					prefsToSave[index][1] = JSON.stringify(item[1]);
+				});
 
-			AsyncStorage.multiSet(prefsToSave);
-		} catch (error) {
-			const errorMsg = "Error storing user preferences:";
+				console.log(prefsToSave);
+				await AsyncStorage.multiSet(prefsToSave);
+			} catch (error) {
+				const errorMsg = "Error storing user preferences:";
 
-			console.log(errorMsg, error);
-			Alert.alert(errorMsg, error.message, undefined, {
-				cancelable: true
-			});
+				console.log(errorMsg, error);
+				Alert.alert(errorMsg, error.message, undefined, {
+					cancelable: true
+				});
+			}
 		}
+
+		setPreferences(updatedPreferences);
 	};
 
 	return (

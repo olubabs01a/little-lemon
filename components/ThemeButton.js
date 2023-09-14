@@ -6,7 +6,7 @@ import { isNullUndefinedOrEmpty } from "../utils/String";
 import { DarkGrey, LightGrey, LemonYellow } from "../utils/Colors";
 import ThemeContext from "../context/ThemeContext";
 
-// TODO: Change dropdown to toggle
+// TODO: Change dropdown to Switch
 export default function ThemeButton(props) {
 	const { theme, toggleTheme } = useContext(ThemeContext);
 

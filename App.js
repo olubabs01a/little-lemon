@@ -25,6 +25,7 @@ import { CustomDrawerSelection } from "./components/types";
 import { isNullUndefinedOrEmpty } from "./utils/String";
 import ThemeContext, { ThemeProvider } from "./context/ThemeContext";
 import UserPreferences from "./components/UserPreferences";
+import { PreferencesProvider } from "./context/PreferencesContext";
 
 //TODO: Create StyleContext to hold all styles, and effect theme changes
 const appStyles = StyleSheet.create({
@@ -156,7 +157,7 @@ export default function App() {
 					{...props}
 					indicatorStyle={theme !== "light" ? "white" : "black"}>
 					<View
-						style={Platform.OS === "ios" ? { marginTop: -20, paddingBottom: 15 } : {}}>
+						style={Platform.OS !== "web" ? { marginTop: -50, paddingBottom: 0 } : {}}>
 						{isLoggedIn ? (
 							<>
 								<DrawerItem
@@ -475,14 +476,16 @@ export default function App() {
 	return (
 		<>
 			<ThemeProvider>
-				<NavigationContainer>
-					<MenuDrawerScreen />
-					{Platform.OS !== "web" && (
-						<View style={appStyles.footer}>
-							<LittleLemonFooter />
-						</View>
-					)}
-				</NavigationContainer>
+				<PreferencesProvider>
+					<NavigationContainer>
+						<MenuDrawerScreen />
+						{Platform.OS !== "web" && (
+							<View style={appStyles.footer}>
+								<LittleLemonFooter />
+							</View>
+						)}
+					</NavigationContainer>
+				</PreferencesProvider>
 			</ThemeProvider>
 		</>
 	);

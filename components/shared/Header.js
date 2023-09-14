@@ -17,6 +17,7 @@ export default function Header(props) {
 
 	return (
 		<Text
+			aria-label={props.text}
 			style={[
 				styles.header,
 				theme !== "light" ? { color: "white", opacity: 1 } : { color: DarkGrey }
