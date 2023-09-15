@@ -156,8 +156,7 @@ export default function App() {
 				<DrawerContentScrollView
 					{...props}
 					indicatorStyle={theme !== "light" ? "white" : "black"}>
-					<View
-						style={Platform.OS !== "web" ? { marginTop: -50, paddingBottom: 0 } : {}}>
+					<View style={Platform.OS !== "web" ? { marginTop: -50, paddingBottom: 0 } : {}}>
 						{isLoggedIn ? (
 							<>
 								<DrawerItem
@@ -427,20 +426,6 @@ export default function App() {
 							/>
 						)}
 					</LeftDrawer.Screen>
-
-					{/* <LeftDrawer.Screen
-						name='Home'
-						options={{
-							title: "Home",
-							drawerIcon: (props) => <Icon {...props} name='home' />
-						}}>
-						{(props) => (
-							<WelcomeScreen
-								{...props}
-								setCustomDrawerSelection={setCustomDrawerSelection}
-							/>
-						)}
-					</LeftDrawer.Screen> */}
 					<LeftDrawer.Screen
 						name='Welcome'
 						options={{
