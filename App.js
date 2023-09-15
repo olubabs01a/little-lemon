@@ -4,12 +4,11 @@ import MenuButton from "./components/MenuButton";
 import ThemeButton from "./components/ThemeButton";
 import LittleLemonFooter from "./components/LittleLemonFooter";
 import Welcome from "./components/Welcome";
-import WelcomeScreen from "./components/WelcomeScreen";
 import SubscribeScreen from "./components/SubscribeScreen";
 import MenuItems from "./components/MenuItems";
 import FeedbackForm from "./components/FeedbackForm";
 import LoginScreen from "./components/LoginScreen";
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useContext } from "react";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import {
 	DrawerContentScrollView,
@@ -24,6 +23,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { CustomDrawerSelection } from "./components/types";
 import { isNullUndefinedOrEmpty } from "./utils/String";
 import ThemeContext, { ThemeProvider } from "./context/ThemeContext";
+import UserContext, { UserProvider } from "./context/UserContext";
 import UserPreferences from "./components/UserPreferences";
 import { PreferencesProvider } from "./context/PreferencesContext";
 
@@ -76,34 +76,44 @@ const appStyles = StyleSheet.create({
 });
 
 export default function App() {
-	//TODO: Create UserContext to replace props
-	const [isLoggedIn, setLoggedIn] = useState(false);
 	const LeftDrawer = createDrawerNavigator();
 	const RightDrawer = createDrawerNavigator();
 	let customDrawerSelection = CustomDrawerSelection.None;
 
-	const MenuDrawerScreen = () => (
-		<RightDrawer.Navigator
-			id='RightDrawer'
-			drawerContent={(props) => <MenuItems {...props} />}
-			screenOptions={{
-				drawerPosition: "right",
-				drawerAllowFontScaling: true,
-				headerTitleAllowFontScaling: true,
-				headerShown: false
-			}}>
-			<RightDrawer.Screen name='MenuItems' component={LeftDrawerScreens} />
-		</RightDrawer.Navigator>
-	);
+	const MenuDrawerScreen = () => {
+		const { isLoggedIn } = useContext(UserContext);
 
-	const setCustomDrawerSelection = useCallback(
-		(updatedRoute) => {
-			customDrawerSelection = updatedRoute;
-		},
-		[customDrawerSelection, isLoggedIn]
-	);
+		const setCustomDrawerSelection = useCallback(
+			(updatedRoute) => {
+				customDrawerSelection = updatedRoute;
+			},
+			[customDrawerSelection, isLoggedIn]
+		);
+
+		return (
+			<RightDrawer.Navigator
+				id='RightDrawer'
+				drawerContent={(props) => <MenuItems {...props} />}
+				screenOptions={{
+					drawerPosition: "right",
+					drawerAllowFontScaling: true,
+					headerTitleAllowFontScaling: true,
+					headerShown: false
+				}}>
+				<RightDrawer.Screen name='MenuItems'>
+					{(props) => (
+						<LeftDrawerScreens
+							{...props}
+							setCustomDrawerSelection={setCustomDrawerSelection}
+						/>
+					)}
+				</RightDrawer.Screen>
+			</RightDrawer.Navigator>
+		);
+	};
 
 	function LogoutDrawerContent(props) {
+		const { isLoggedIn, setLoggedIn } = useContext(UserContext);
 		const { theme } = useContext(ThemeContext);
 		const navigator = useNavigation();
 		const defaultTextColor = theme !== "light" ? LightGrey : DarkGrey;
@@ -156,7 +166,19 @@ export default function App() {
 				<DrawerContentScrollView
 					{...props}
 					indicatorStyle={theme !== "light" ? "white" : "black"}>
-					<View style={Platform.OS !== "web" ? { marginTop: -50, paddingBottom: 0 } : {}}>
+					<View
+						style={
+							Platform.OS !== "web"
+								? {
+										marginTop: isLoggedIn
+											? Platform.OS !== "ios"
+												? -50
+												: -60
+											: -10,
+										paddingBottom: undefined
+								  }
+								: {}
+						}>
 						{isLoggedIn ? (
 							<>
 								<DrawerItem
@@ -285,7 +307,7 @@ export default function App() {
 						/>
 					</View>
 
-					<View style={{ marginTop: Platform.OS === "ios" ? -25 : -5 }}>
+					<View style={Platform.OS !== "ios" ? { marginTop: 5 } : { marginTop: 5 }}>
 						{isLoggedIn && (
 							<Pressable
 								aria-label={"Log out"}
@@ -300,8 +322,6 @@ export default function App() {
 										...appStyles.logOutLink,
 										color: theme !== "light" ? LightGrey : DeepRed
 									}}
-									isLoggedIn={isLoggedIn}
-									setLoggedIn={setLoggedIn}
 								/>
 							</Pressable>
 						)}
@@ -318,7 +338,7 @@ export default function App() {
 		);
 	}
 
-	const LeftDrawerScreens = () => {
+	const LeftDrawerScreens = (drawerProps) => {
 		const { theme } = useContext(ThemeContext);
 
 		return (
@@ -354,60 +374,27 @@ export default function App() {
 							/** hide this login button in top half of drawer */
 							drawerItemStyle: { display: "none" }
 						}}>
-						{(props) => (
-							<LoginScreen
-								{...props}
-								isLoggedIn={isLoggedIn}
-								setLoggedIn={setLoggedIn}
-								setCustomDrawerSelection={setCustomDrawerSelection}
-							/>
-						)}
+						{(props) => <LoginScreen {...{ ...props, ...drawerProps }} />}
 					</LeftDrawer.Screen>
 					<LeftDrawer.Screen
 						name='Profile'
 						options={{
 							unmountOnBlur: true,
-							headerRight: (props) => (
-								<LogInOutButton
-									{...props}
-									isLoggedIn={isLoggedIn}
-									setLoggedIn={setLoggedIn}
-								/>
-							),
+							headerRight: (props) => <LogInOutButton {...props} />,
 							/** hide this profile button in top half of drawer */
 							drawerItemStyle: { display: "none" }
 						}}>
-						{(props) => (
-							<ProfileScreen
-								{...props}
-								isLoggedIn={isLoggedIn}
-								setLoggedIn={setLoggedIn}
-								setCustomDrawerSelection={setCustomDrawerSelection}
-							/>
-						)}
+						{(props) => <ProfileScreen {...{ ...props, ...drawerProps }} />}
 					</LeftDrawer.Screen>
 					<LeftDrawer.Screen
 						name='Preferences'
 						options={{
 							unmountOnBlur: true,
-							headerRight: (props) => (
-								<LogInOutButton
-									{...props}
-									isLoggedIn={isLoggedIn}
-									setLoggedIn={setLoggedIn}
-								/>
-							),
+							headerRight: (props) => <LogInOutButton {...props} />,
 							/** hide this preferences button in top half of drawer */
 							drawerItemStyle: { display: "none" }
 						}}>
-						{(props) => (
-							<UserPreferences
-								{...props}
-								isLoggedIn={isLoggedIn}
-								setLoggedIn={setLoggedIn}
-								setCustomDrawerSelection={setCustomDrawerSelection}
-							/>
-						)}
+						{(props) => <UserPreferences {...{ ...props, ...drawerProps }} />}
 					</LeftDrawer.Screen>
 					<LeftDrawer.Screen
 						name='Subscribe'
@@ -418,13 +405,7 @@ export default function App() {
 							/** hide this login button in drawer */
 							drawerItemStyle: { display: "none" }
 						}}>
-						{(props) => (
-							<SubscribeScreen
-								{...props}
-								setLoggedIn={setLoggedIn}
-								setCustomDrawerSelection={setCustomDrawerSelection}
-							/>
-						)}
+						{(props) => <SubscribeScreen {...{ ...props, ...drawerProps }} />}
 					</LeftDrawer.Screen>
 					<LeftDrawer.Screen
 						name='Welcome'
@@ -432,12 +413,7 @@ export default function App() {
 							title: "Welcome",
 							drawerIcon: (props) => <Icon {...props} name='home' />
 						}}>
-						{(props) => (
-							<Welcome
-								{...props}
-								setCustomDrawerSelection={setCustomDrawerSelection}
-							/>
-						)}
+						{(props) => <Welcome {...{ ...props, ...drawerProps }} />}
 					</LeftDrawer.Screen>
 					<LeftDrawer.Screen
 						name='Feedback'
@@ -446,12 +422,7 @@ export default function App() {
 							title: "Feedback",
 							drawerIcon: (props) => <Icon {...props} name='comments' />
 						}}>
-						{(props) => (
-							<FeedbackForm
-								{...props}
-								setCustomDrawerSelection={setCustomDrawerSelection}
-							/>
-						)}
+						{(props) => <FeedbackForm {...{ ...props, ...drawerProps }} />}
 					</LeftDrawer.Screen>
 				</LeftDrawer.Navigator>
 			</View>
@@ -461,16 +432,18 @@ export default function App() {
 	return (
 		<>
 			<ThemeProvider>
-				<PreferencesProvider>
-					<NavigationContainer>
-						<MenuDrawerScreen />
-						{Platform.OS !== "web" && (
-							<View style={appStyles.footer}>
-								<LittleLemonFooter />
-							</View>
-						)}
-					</NavigationContainer>
-				</PreferencesProvider>
+				<UserProvider>
+					<PreferencesProvider>
+						<NavigationContainer>
+							<MenuDrawerScreen />
+							{Platform.OS !== "web" && (
+								<View style={appStyles.footer}>
+									<LittleLemonFooter />
+								</View>
+							)}
+						</NavigationContainer>
+					</PreferencesProvider>
+				</UserProvider>
 			</ThemeProvider>
 		</>
 	);

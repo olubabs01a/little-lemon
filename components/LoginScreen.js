@@ -5,6 +5,7 @@ import { DarkGrey, LemonYellow, LightGrey } from "../utils/Colors";
 import { isNullUndefinedOrEmpty } from "../utils/String";
 import { CustomDrawerSelection } from "./types";
 import ThemeContext from "../context/ThemeContext";
+import UserContext from "../context/UserContext";
 
 const styles = StyleSheet.create({
 	container: {
@@ -69,6 +70,7 @@ export default function LoginScreen(props) {
 	const [password, setPassword] = useState("");
 	const [hasValidInput, setInputValidState] = useState(false);
 	const { theme } = useContext(ThemeContext);
+	const { isLoggedIn, setLoggedIn } = useContext(UserContext);
 	const passwordRef = useRef();
 
 	const resetForm = () => {
@@ -121,7 +123,7 @@ export default function LoginScreen(props) {
 					]}>
 					Welcome to Little Lemon
 				</Text>
-				{props.isLoggedIn === false && (
+				{isLoggedIn === false && (
 					<>
 						<Text
 							style={[
@@ -183,7 +185,7 @@ export default function LoginScreen(props) {
 							}
 							onPress={(_) => {
 								props.setCustomDrawerSelection(CustomDrawerSelection.None);
-								props.setLoggedIn(true);
+								setLoggedIn(true);
 								props.navigation.navigate("Welcome");
 							}}>
 							<Text style={styles.submitButtonText}>Submit</Text>

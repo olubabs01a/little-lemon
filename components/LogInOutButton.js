@@ -1,10 +1,12 @@
-import * as React from "react";
+import { useContext } from "react";
 import { Pressable, StyleSheet, Text, Platform } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import UserContext from "../context/UserContext";
 
 export default function LogInOutButton(props) {
 	const navigator = useNavigation();
+	const { isLoggedIn, setLoggedIn } = useContext(UserContext);
 
 	const styles = StyleSheet.create({
 		loggedIn: {
@@ -15,14 +17,14 @@ export default function LogInOutButton(props) {
 		}
 	});
 
-	const renderText = () => (props.isLoggedIn ? "Log out" : "Login");
-	const renderIcon = () => (props.isLoggedIn ? "user-circle" : "user");
+	const renderText = () => (isLoggedIn ? "Log out" : "Login");
+	const renderIcon = () => (isLoggedIn ? "user-circle" : "user");
 
 	return (
 		<Pressable
 			aria-label={renderText()}
 			onPress={() => {
-				props.isLoggedIn ? props.setLoggedIn(false) : navigator.navigate("Login");
+				isLoggedIn ? setLoggedIn(false) : navigator.navigate("Login");
 			}}>
 			{props.hideLogo ? (
 				<Text style={props.textOnlyStyle}>{renderText()}</Text>
