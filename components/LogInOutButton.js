@@ -24,7 +24,11 @@ export default function LogInOutButton(props) {
 		<Pressable
 			aria-label={renderText()}
 			onPress={() => {
-				isLoggedIn ? setLoggedIn(false) : navigator.navigate("Login");
+				if (isLoggedIn) {
+					setLoggedIn(false);
+				}
+
+				navigator.navigate("Login");
 			}}>
 			{props.hideLogo ? (
 				<Text style={props.textOnlyStyle}>{renderText()}</Text>
