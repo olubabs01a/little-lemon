@@ -23,9 +23,10 @@ export const ThemeProvider = ({ children }) => {
 		getTheme();
 	}, []);
 
-	const toggleTheme = (newTheme) => {
+	const toggleTheme = () => {
+		const newTheme = theme === "light" ? "dark" : "light";
 		setTheme(newTheme);
-		AsyncStorage.setItem("theme", newTheme);
+		(async () => await AsyncStorage.setItem("theme", newTheme))();
 	};
 
 	return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>;

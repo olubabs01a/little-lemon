@@ -1,111 +1,51 @@
 import { useContext } from "react";
-import { StyleSheet, Text, View, Platform } from "react-native";
-import { Dropdown } from "react-native-element-dropdown";
-import Icon from "react-native-vector-icons/FontAwesome";
-import { isNullUndefinedOrEmpty } from "../utils/String";
-import { DarkGrey, LightGrey, LemonYellow } from "../utils/Colors";
+import { StyleSheet, Switch, Text, View } from "react-native";
+import { DarkGrey, LemonYellow, LightGrey } from "../utils/Colors";
 import ThemeContext from "../context/ThemeContext";
 
-// TODO: Change dropdown to Switch
+// TODO: Use UserContext to adjust button position when logged in
 export default function ThemeButton(props) {
 	const { theme, toggleTheme } = useContext(ThemeContext);
 
 	const styles = StyleSheet.create({
 		container: {
 			flex: 1,
-			justifyContent: "space-between",
-			alignItems: "flex-end",
-			lineHeight: Platform.OS === "ios" ? 30 : 60
+			marginHorizontal: 10
 		},
-		themeSelection: {
-			margin: 20,
-			minWidth: Platform.OS === "web" ? 110 : 100,
-			maxHeight: 100,
-			borderBottomColor: theme !== "light" ? LightGrey : DarkGrey,
-			borderBottomWidth: 0.5,
-			elevation: 1
-		},
-		listSelection: {
-			color: theme !== "light" ? DarkGrey : "white",
-			backgroundColor: theme !== "light" ? DarkGrey : "white"
+		innerContainer: {
+			paddingTop: 50,
+			flexDirection: "row",
+			justifyContent: "flex-end",
+			verticalAlign: "middle",
+			alignItems: "center",
 		},
 		iconTextStyle: {
-			fontSize: 17,
-			lineHeight: 20
+			fontSize: 15,
+			color: theme !== "light" ? LightGrey : DarkGrey
 		},
 		iconStyle: {
-			padding: 5
-		},
-		selectedTextStyle: {
-			color: theme !== "light" ? LightGrey : DarkGrey,
-			fontWeight: "400",
-			paddingHorizontal: 5
+			transform: [{ scaleX: 0.6 }, { scaleY: 0.6 }],
+			verticalAlign: "middle",
 		}
 	});
 
-	const themeData = [
-		{ label: "Dark", value: "dark", icon: "circle" },
-		{ label: "Light", value: "light", icon: "circle-o" }
-	];
-
 	return (
 		<View style={styles.container} aria-label={"Theme"}>
-			<Dropdown
-				aria-label={"Theme Selection"}
-				style={styles.themeSelection}
-				containerStyle={styles.listSelection}
-				activeColor={LemonYellow}
-				iconStyle={styles.iconStyle}
-				itemTextStyle={styles.itemTextStyle}
-				itemContainerStyle={styles.iconStyle}
-				selectedTextStyle={styles.selectedTextStyle}
-				data={themeData}
-				search={false}
-				labelField='label'
-				valueField='value'
-				value={theme}
-				onChange={(item) => {
-					toggleTheme(item.value);
-				}}
-				renderItem={(item, selected) => (
-					<Icon
-						{...props}
-						name={item.icon}
-						aria-label={item.label}
-						style={[
-							styles.iconStyle,
-							selected && { color: DarkGrey },
-							!selected && theme !== "light" && { color: LightGrey }
-						]}
-						size={20}>
-						<Text style={[styles.iconTextStyle, selected && { color: DarkGrey }]}>
-							{` ${item.label} `}
-							{selected && (
-								<Icon
-									{...props}
-									name={"check"}
-									style={[styles.iconStyle, selected && { color: DarkGrey }]}
-									size={15}
-								/>
-							)}
-						</Text>
-					</Icon>
-				)}
-				renderLeftIcon={() => (
-					<Icon
-						{...props}
-						name={
-							isNullUndefinedOrEmpty(theme) === false
-								? theme === "light"
-									? "circle-o"
-									: "circle"
-								: "adjust"
-						}
-						style={styles.iconStyle}
-						size={20}
-					/>
-				)}
-			/>
+			<View style={styles.innerContainer}>
+				<Text style={styles.iconTextStyle}>Light</Text>
+				<Switch
+					aria-label={"Theme Selection"}
+					value={theme !== "light"}
+					trackColor={{
+						true: LemonYellow,
+						false: LightGrey
+					}}
+					ios_backgroundColor={LightGrey}
+					style={styles.iconStyle}
+					onValueChange={toggleTheme}
+				/>
+				<Text style={styles.iconTextStyle}>Dark</Text>
+			</View>
 		</View>
 	);
 }
