@@ -1,5 +1,5 @@
 import { View, Switch, Text, StyleSheet } from "react-native";
-import { DarkGreen, DarkGrey, DeepRed, LemonYellow } from "../utils/Colors";
+import { DarkGreen, DarkGrey, LemonYellow, LightGrey } from "../utils/Colors";
 import { useEffect, useContext, useState, useCallback } from "react";
 import PreferencesContext from "../context/PreferencesContext";
 import ThemeContext from "../context/ThemeContext";
@@ -69,22 +69,20 @@ export default function UserPreferences(props) {
 					aria-label={props.title}
 					style={[
 						styles.preferenceItem,
-						theme !== "light" ? { color: "white" } : { color: DarkGrey }
+						{ color: theme !== "light" ? "white" : DarkGrey }
 					]}>
 					{props.title}
 				</Text>
 				<Switch
 					aria-label={props.title}
 					value={isEnabled}
+					thumbColor={isEnabled ? LemonYellow : DarkGreen}
 					trackColor={{
 						true: DarkGreen,
-						false: DeepRed
+						false: LightGrey
 					}}
-					ios_backgroundColor={DeepRed}
-					style={[
-						styles.switchStyle,
-						theme !== "light" ? { color: "white" } : { color: DarkGrey }
-					]}
+					ios_backgroundColor={LightGrey}
+					style={[styles.switchStyle, { color: theme !== "light" ? "white" : DarkGrey }]}
 					onValueChange={onButtonToggle}
 				/>
 			</View>
@@ -93,10 +91,7 @@ export default function UserPreferences(props) {
 
 	return (
 		<View
-			style={[
-				styles.container,
-				theme !== "light" ? { backgroundColor: DarkGrey } : { backgroundColor: "white" }
-			]}>
+			style={[styles.container, { backgroundColor: theme !== "light" ? DarkGrey : "white" }]}>
 			<Header text={"Account Preferences"} />
 			<View style={{ paddingTop: 15 }}>
 				{preferences.map((setting, index) => (
