@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { StyleSheet, Switch, Text, View } from "react-native";
 import { DarkGrey, LemonYellow, LightGrey } from "../utils/Colors";
 import ThemeContext from "../context/ThemeContext";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 // TODO: Use UserContext to adjust button position when logged in
 export default function ThemeButton(props) {
@@ -23,16 +24,21 @@ export default function ThemeButton(props) {
 			fontSize: 15,
 			color: theme !== "light" ? LightGrey : DarkGrey
 		},
-		iconStyle: {
+		switchStyle: {
 			transform: [{ scaleX: 0.6 }, { scaleY: 0.6 }],
 			verticalAlign: "middle",
+		},
+		iconStyle: {
+			color: theme !== "light" ? LightGrey : DarkGrey,
+			verticalAlign: "middle",
+			fontSize: 18
 		}
 	});
 
 	return (
 		<View style={styles.container} aria-label={"Theme"}>
 			<View style={styles.innerContainer}>
-				<Text style={styles.iconTextStyle}>Light</Text>
+				<Icon {...props} style={styles.iconStyle} name="sun-o" />
 				<Switch
 					aria-label={"Theme Selection"}
 					value={theme !== "light"}
@@ -41,10 +47,10 @@ export default function ThemeButton(props) {
 						false: LightGrey
 					}}
 					ios_backgroundColor={LightGrey}
-					style={styles.iconStyle}
+					style={styles.switchStyle}
 					onValueChange={toggleTheme}
 				/>
-				<Text style={styles.iconTextStyle}>Dark</Text>
+				<Icon {...props} style={styles.iconStyle} name="moon-o" />
 			</View>
 		</View>
 	);
