@@ -26,9 +26,13 @@ export default function LogInOutButton(props) {
 			onPress={() => {
 				if (isLoggedIn) {
 					setLoggedIn(false);
+					navigator.reset({
+						index: 0,
+						routes: [{ name: "Welcome" }]
+					});
+				} else {
+					navigator.navigate("Login");
 				}
-
-				navigator.navigate("Login");
 			}}>
 			{props.hideLogo ? (
 				<Text style={props.textOnlyStyle}>{renderText()}</Text>

@@ -311,10 +311,7 @@ export default function App() {
 						{isLoggedIn && (
 							<Pressable
 								aria-label={"Log out"}
-								style={{ ...appStyles.button, ...appStyles.logOutWrapper }}
-								onPress={() => {
-									setLoggedIn(false);
-								}}>
+								style={{ ...appStyles.button, ...appStyles.logOutWrapper }}>
 								<LogInOutButton
 									{...props}
 									hideLogo={true}
