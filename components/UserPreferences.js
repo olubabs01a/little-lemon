@@ -16,14 +16,18 @@ const styles = StyleSheet.create({
 	innerContainer: {
 		paddingHorizontal: 10,
 		paddingVertical: 10,
-        flexDirection: "row",
+		flexDirection: "row",
 		flexWrap: "wrap",
 		justifyContent: "space-between"
 	},
 	preferenceItem: {
 		fontSize: 16,
-        textAlignVertical: 'center',
+		textAlignVertical: "center",
 		color: LemonYellow
+	},
+	switchStyle: {
+		transform: Platform.OS !== "ios" ? [] : [{ scaleX: 0.6 }, { scaleY: 0.6 }],
+		verticalAlign: "middle"
 	}
 });
 
@@ -35,12 +39,15 @@ export default function UserPreferences(props) {
 		props.setCustomDrawerSelection(CustomDrawerSelection.Preferences);
 	}, []);
 
-    const onUpdateUserPreferences = useCallback((updatedPref, index) => {
-        let userPrefs = preferences;
-        userPrefs[index] = updatedPref;
+	const onUpdateUserPreferences = useCallback(
+		(updatedPref, index) => {
+			let userPrefs = preferences;
+			userPrefs[index] = updatedPref;
 
-        updatePreferences(userPrefs);
-    }, [preferences]);
+			updatePreferences(userPrefs);
+		},
+		[preferences]
+	);
 
 	function PreferenceItem(props) {
 		const [isEnabled, setEnabled] = useState(props.isEnabled);
@@ -48,7 +55,10 @@ export default function UserPreferences(props) {
 		const onButtonToggle = useCallback(
 			(val) => {
 				setEnabled(val);
-				props.onUpdateUserPreferences([props.name, { title: props.title, isEnabled: val }], props.index);
+				props.onUpdateUserPreferences(
+					[props.name, { title: props.title, isEnabled: val }],
+					props.index
+				);
 			},
 			[props, preferences]
 		);
@@ -56,7 +66,7 @@ export default function UserPreferences(props) {
 		return (
 			<View style={styles.innerContainer}>
 				<Text
-                    aria-label={props.title}
+					aria-label={props.title}
 					style={[
 						styles.preferenceItem,
 						theme !== "light" ? { color: "white" } : { color: DarkGrey }
@@ -72,7 +82,7 @@ export default function UserPreferences(props) {
 					}}
 					ios_backgroundColor={DeepRed}
 					style={[
-						styles.preferenceItem,
+						styles.switchStyle,
 						theme !== "light" ? { color: "white" } : { color: DarkGrey }
 					]}
 					onValueChange={onButtonToggle}
@@ -91,12 +101,12 @@ export default function UserPreferences(props) {
 			<View style={{ paddingTop: 15 }}>
 				{preferences.map((setting, index) => (
 					<PreferenceItem
-                        name={setting[0]}
+						name={setting[0]}
 						key={setting + index}
-                        index={index}
+						index={index}
 						title={setting[1].title}
 						isEnabled={setting[1].isEnabled}
-                        onUpdateUserPreferences={onUpdateUserPreferences}
+						onUpdateUserPreferences={onUpdateUserPreferences}
 					/>
 				))}
 			</View>
