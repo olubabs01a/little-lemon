@@ -186,7 +186,10 @@ export default function LoginScreen(props) {
 							onPress={(_) => {
 								props.setCustomDrawerSelection(CustomDrawerSelection.None);
 								setLoggedIn(true);
-								props.navigation.navigate("Welcome");
+								props.navigation.reset({
+									index: 0,
+									routes: [{ name: "Welcome" }]
+								});
 							}}>
 							<Text style={styles.submitButtonText}>Submit</Text>
 						</Pressable>

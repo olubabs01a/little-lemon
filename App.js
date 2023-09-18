@@ -113,7 +113,7 @@ export default function App() {
 	};
 
 	function LogoutDrawerContent(props) {
-		const { isLoggedIn, setLoggedIn } = useContext(UserContext);
+		const { isLoggedIn } = useContext(UserContext);
 		const { theme } = useContext(ThemeContext);
 		const navigator = useNavigation();
 		const defaultTextColor = theme !== "light" ? LightGrey : DarkGrey;
